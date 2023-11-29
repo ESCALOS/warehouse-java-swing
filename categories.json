@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "Televisores"
+  },
+  {
+    "id": 3,
+    "name": "Accesorios"
+  },
+  {
+    "id": 6,
+    "name": "Hogares"
+  },
+  {
+    "id": 7,
+    "name": "Muebles"
+  },
+  {
+    "id": 9,
+    "name": "Ropa"
+  },
+  {
+    "id": 10,
+    "name": "Zapatos"
+  },
+  {
+    "id": 11,
+    "name": "Utensilios de cocina"
+  },
+  {
+    "id": 13,
+    "name": "Sonido"
+  },
+  {
+    "id": 14,
+    "name": "Estereo"
+  }
+]
