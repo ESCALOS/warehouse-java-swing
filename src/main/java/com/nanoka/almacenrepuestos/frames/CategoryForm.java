@@ -37,7 +37,9 @@ public class CategoryForm extends javax.swing.JDialog {
     }
     
     private void save(String name) {
-        this.validedForm(name);
+        if(!this.validedForm(name)){
+            return;
+        }
         int state = categoryFrame.categoryService.save(name);
         switch (state) {
             case 0 -> {
@@ -51,7 +53,9 @@ public class CategoryForm extends javax.swing.JDialog {
     }
     
     public void update(String name){
-        this.validedForm(name);
+        if(!this.validedForm(name)){
+            return;
+        }
         int state = categoryFrame.categoryService.update(id,this.categoryIndex,name);
         switch (state) {
             case 0 -> {
@@ -65,11 +69,12 @@ public class CategoryForm extends javax.swing.JDialog {
         }
     }
     
-    private void validedForm(String name){
+    private boolean validedForm(String name){
         if(name.isBlank()) {
             JOptionPane.showMessageDialog(rootPane, "El nombre es requerido");
-            return;
+            return false;
         }
+        return true;
     }
 
     /**
