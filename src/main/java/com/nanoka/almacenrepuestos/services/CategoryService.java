@@ -53,13 +53,13 @@ public class CategoryService {
     public int save(String name){
         List<Category> categories = new ArrayList<>();
         loadData(categories);
-        int id = categories.isEmpty() ? 0 : categories.get(categories.size() - 1).getId() + 1;
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         if(this.isCategoryNameExist(categories,name)){
             return 2;
         }
+        int id = categories.isEmpty() ? 0 : categories.get(categories.size() - 1).getId() + 1;
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try (FileWriter writer = new FileWriter("categories.json",StandardCharsets.UTF_8)) {
-            Category category = new Category(id,name);
+            Category category = Category.builder().id(id).name(name).build();
             categories.add(category);
             gson.toJson(categories, writer);
             this.categories.add(0,category);

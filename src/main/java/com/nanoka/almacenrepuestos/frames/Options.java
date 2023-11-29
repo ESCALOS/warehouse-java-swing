@@ -49,6 +49,11 @@ public class Options extends javax.swing.JFrame {
         btn_supplier.setText("Proveedores");
         btn_supplier.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btn_supplier.setPreferredSize(new java.awt.Dimension(125, 25));
+        btn_supplier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_supplierActionPerformed(evt);
+            }
+        });
 
         btn_product.setText("Productos");
         btn_product.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -84,7 +89,7 @@ public class Options extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btn_product, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btn_logout, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                .addComponent(btn_logout, javax.swing.GroupLayout.PREFERRED_SIZE, 23, Short.MAX_VALUE)
                 .addContainerGap(29, Short.MAX_VALUE))
         );
 
@@ -97,6 +102,12 @@ public class Options extends javax.swing.JFrame {
         CategoryFrame categoryFrame = new CategoryFrame();
         categoryFrame.setVisible(true);
     }//GEN-LAST:event_btn_categoryActionPerformed
+
+    private void btn_supplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_supplierActionPerformed
+        dispose();
+        SupplierFrame supplierFrame = new SupplierFrame();
+        supplierFrame.setVisible(true);
+    }//GEN-LAST:event_btn_supplierActionPerformed
 
     /**
      * @param args the command line arguments

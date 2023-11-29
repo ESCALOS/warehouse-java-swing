@@ -13,11 +13,7 @@
   },
   {
     "id": 7,
-    "name": "Muebles"
-  },
-  {
-    "id": 9,
-    "name": "Ropa"
+    "name": "Mobiliario"
   },
   {
     "id": 10,
@@ -38,5 +34,9 @@
   {
     "id": 15,
     "name": "Computadoras"
+  },
+  {
+    "id": 16,
+    "name": "Ropa"
   }
 ]

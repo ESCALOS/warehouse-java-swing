@@ -42,8 +42,4 @@ public class CategoryTable extends AbstractTableModel {
         }
         return null;
     }
-    
-    public int getId(int rowIndex, int columnIndex) {
-        return categories.get(rowIndex).getId();
-    }
 }
