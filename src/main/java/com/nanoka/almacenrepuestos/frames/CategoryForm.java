@@ -26,11 +26,11 @@ public class CategoryForm extends javax.swing.JDialog {
         initComponents();
     }
     
-    public CategoryForm(CategoryFrame parent, boolean modal,int id, int categoriesIndex, String currentName) {
+    public CategoryForm(CategoryFrame parent, boolean modal,int id, int categoryIndex, String currentName) {
         super(parent, modal);
         this.categoryFrame = parent;
         this.id = id;
-        this.categoryIndex = categoriesIndex;
+        this.categoryIndex = categoryIndex;
         setTitle("Editar categoría");
         initComponents();
         txt_name.setText(currentName);

@@ -21,10 +21,6 @@ import java.util.List;
  */
 public class SupplierService {
     public List<Supplier> suppliers = new ArrayList<>();
-    
-    public SupplierService() {
-        this.refreshData();
-    }
 
     private void loadData(List<Supplier> suppliers) {
         suppliers.clear();
@@ -37,6 +33,7 @@ public class SupplierService {
     }
     
     public List<Supplier> getSuppliers() {
+        this.refreshData();
         return this.suppliers;
     }
     
@@ -49,14 +46,25 @@ public class SupplierService {
         }
         return matching;
     }
-    
+    /**
+     * Guarda al proveedor
+     * @param ruc Ruc del proveedor
+     * @param name Nombre del proveedor
+     * @param tel Telefono del proveedor
+     * @param email Correo del proveedor
+     * @return Codigo de respuesta
+     */
     public int save(String ruc, String name, String tel, String email){
         List<Supplier> suppliers = new ArrayList<>();
         loadData(suppliers);
+        int isExist = this.isSupplierExist(suppliers, Supplier.builder().ruc(ruc).name(name).email(email).tel(tel).build());
+        if(isExist != 0){
+            return isExist;
+        }
         int id = suppliers.isEmpty() ? 0 : suppliers.get(suppliers.size() - 1).getId() + 1;
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try (FileWriter writer = new FileWriter("suppliers.json",StandardCharsets.UTF_8)) {
-            Supplier supplier = Supplier.builder().id(id).name(name).tel(tel).email(email).build();
+            Supplier supplier = Supplier.builder().id(id).ruc(ruc).name(name).tel(tel).email(email).build();
             suppliers.add(supplier);
             gson.toJson(suppliers, writer);
             this.suppliers.add(0,supplier);
@@ -66,23 +74,42 @@ public class SupplierService {
             return 1;
         }
     }
-    
-    public int update(int id, int localIndex, Supplier supplier) {
+    /**
+     * Edita los datos del proveedor
+     * @param id Id del proveedor
+     * @param localIndex Indice de la lista de proveedores ordenada por nombre
+     * @param ruc Ruc del proveedor
+     * @param name Nombre del proveedor
+     * @param tel Telefono del proveedor
+     * @param email Correo del proveedor
+     * @return Codigo de respuesta
+     */
+    public int update(int id, int localIndex, String ruc, String name, String tel, String email) {
         List<Supplier> suppliers = new ArrayList<>();
         loadData(suppliers);
         int index = binarySearch(suppliers, id);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         if(index >= 0){
-            if(suppliers.get(index).getName().equalsIgnoreCase(supplier.getName())){
+            if(suppliers.get(index).getRuc().equalsIgnoreCase(ruc)
+                    && suppliers.get(index).getName().equalsIgnoreCase(name)
+                    && suppliers.get(index).getEmail().equalsIgnoreCase(email)
+                    && suppliers.get(index).getTel().equalsIgnoreCase(tel)){
                 return 0;
             }
-            if(this.isSupplierNameExist(suppliers,supplier.getName())){
-                return 2;
+            int isExist = this.isSupplierExist(suppliers, Supplier.builder().id(id).ruc(ruc).name(name).email(email).tel(tel).build());
+            if(isExist != 0){
+                return isExist;
             }
             try (FileWriter writer = new FileWriter("suppliers.json",StandardCharsets.UTF_8)) {
-                suppliers.get(index).setName(supplier.getName());
+                suppliers.get(index).setRuc(ruc);
+                suppliers.get(index).setName(name);
+                suppliers.get(index).setTel(tel);
+                suppliers.get(index).setEmail(email);
                 gson.toJson(suppliers, writer);
-                this.suppliers.get(localIndex).setName(supplier.getName());
+                this.suppliers.get(localIndex).setRuc(ruc);
+                this.suppliers.get(localIndex).setName(name);
+                this.suppliers.get(localIndex).setTel(tel);
+                this.suppliers.get(localIndex).setEmail(email);
                 return 0;
             } catch (IOException e) {
                 System.out.println(e.getMessage());
@@ -112,14 +139,30 @@ public class SupplierService {
             return false;
         }
     }
-    
-    public boolean isSupplierNameExist(List<Supplier> suppliers, String nameToCheck) {
+    /**
+     * Verifica que los datos del proveedor no existan
+     * @param suppliers
+     * @param supplierToCheck
+     * @return Regresa 0 si todo sale bien
+     */
+    public int isSupplierExist(List<Supplier> suppliers, Supplier supplierToCheck) {
         for (Supplier supplier : suppliers) {
-            if (supplier.getName().equalsIgnoreCase(nameToCheck)) {
-                return true;
+            if(supplier.getId() != supplierToCheck.getId()) {
+               if(supplier.getRuc().equalsIgnoreCase(supplierToCheck.getRuc())){
+                    return 21;
+                }
+                if (supplier.getName().equalsIgnoreCase(supplierToCheck.getName())) {
+                    return 22;
+                }
+                if(supplier.getTel().equalsIgnoreCase(supplierToCheck.getTel())) {
+                    return 23;
+                }
+                if(supplier.getEmail().equalsIgnoreCase(supplierToCheck.getEmail())) {
+                    return 24;
+                } 
             }
         }
-        return false;
+        return 0;
     }
     
     private void refreshData() {

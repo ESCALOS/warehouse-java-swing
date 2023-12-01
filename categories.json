@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "name": "Televisores"
+    "name": "Televisoress"
   },
   {
     "id": 3,
@@ -10,10 +10,6 @@
   {
     "id": 6,
     "name": "Hogar"
-  },
-  {
-    "id": 7,
-    "name": "Mobiliario"
   },
   {
     "id": 10,
@@ -25,7 +21,7 @@
   },
   {
     "id": 13,
-    "name": "Sonido"
+    "name": "Sonidos"
   },
   {
     "id": 14,
@@ -38,5 +34,13 @@
   {
     "id": 16,
     "name": "Ropa"
+  },
+  {
+    "id": 17,
+    "name": "Moviliarios"
+  },
+  {
+    "id": 19,
+    "name": "Todo"
   }
 ]

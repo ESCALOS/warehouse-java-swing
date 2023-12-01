@@ -22,10 +22,6 @@ public class CategoryService {
 
     public List<Category> categories = new ArrayList<>();
     
-    public CategoryService() {
-        this.refreshData();
-    }
-    
     private void loadData(List<Category> categories) {
         categories.clear();
         try (FileReader reader = new FileReader("categories.json",StandardCharsets.UTF_8)) {
@@ -37,6 +33,7 @@ public class CategoryService {
     }
     
     public List<Category> getCategories() {
+        this.refreshData();
         return this.categories;
     }
     
@@ -53,7 +50,7 @@ public class CategoryService {
     public int save(String name){
         List<Category> categories = new ArrayList<>();
         loadData(categories);
-        if(this.isCategoryNameExist(categories,name)){
+        if(this.isCategoryExist(categories,Category.builder().name(name).build())){
             return 2;
         }
         int id = categories.isEmpty() ? 0 : categories.get(categories.size() - 1).getId() + 1;
@@ -62,7 +59,7 @@ public class CategoryService {
             Category category = Category.builder().id(id).name(name).build();
             categories.add(category);
             gson.toJson(categories, writer);
-            this.categories.add(0,category);
+            this.categories.add(category);
             return 0;
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -79,7 +76,7 @@ public class CategoryService {
             if(categories.get(index).getName().equalsIgnoreCase(name)){
                 return 0;
             }
-            if(this.isCategoryNameExist(categories,name)){
+            if(this.isCategoryExist(categories,Category.builder().id(id).name(name).build())){
                 return 2;
             }
             try (FileWriter writer = new FileWriter("categories.json",StandardCharsets.UTF_8)) {
@@ -116,10 +113,12 @@ public class CategoryService {
         }
     }
     
-    public boolean isCategoryNameExist(List<Category> categories, String nameToCheck) {
+    public boolean isCategoryExist(List<Category> categories, Category categoryToCheck) {
         for (Category category : categories) {
-            if (category.getName().equalsIgnoreCase(nameToCheck)) {
-                return true;
+            if(category.getId() != categoryToCheck.getId()){
+                if (category.getName().equalsIgnoreCase(categoryToCheck.getName())) {
+                    return true;
+                }
             }
         }
         return false;

@@ -5,5 +5,19 @@
     "name": "Carlos Escate",
     "tel": "941678196",
     "email": "stornblood6969@gmail.com"
+  },
+  {
+    "id": 2,
+    "ruc": "10708213351",
+    "name": "Rodrigo Escate",
+    "tel": "123456789",
+    "email": "prueba@test.com"
+  },
+  {
+    "id": 3,
+    "ruc": "10708213262",
+    "name": "Daniel",
+    "tel": "123456781",
+    "email": "test@gmail.com"
   }
 ]
