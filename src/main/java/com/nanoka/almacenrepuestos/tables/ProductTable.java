@@ -14,7 +14,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class ProductTable extends AbstractTableModel{
     private List<Product> products;
-    private String[] columnNames = {"Nombre","Unidad de Medida","Stock","Stock Mínimo","Valor"};
+    private String[] columnNames = {"Nombre","Unidad de Medida","Categoría","Proveedor","Stock","Stock Mínimo","Valor"};
 
     public ProductTable(List<Product> products) {
         this.products = products;
@@ -31,6 +31,11 @@ public class ProductTable extends AbstractTableModel{
     }
 
     @Override
+    public String getColumnName(int column){
+        return columnNames[column];
+    }
+    
+    @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Product product = products.get(rowIndex);
         switch (columnIndex) {
@@ -39,11 +44,15 @@ public class ProductTable extends AbstractTableModel{
             case 1:
                 return product.getMeasurementUnit();
             case 2:
-                return product.getStock();
+                return product.getCategory().getName();
             case 3:
-                return product.getStockMin();
+                return product.getSupplier().getName();
             case 4:
-                return product.getPrice();
+                return product.getStock();
+            case 5:
+                return product.getStockMin();
+            case 6:
+                return "S/. "+product.getPrice().toString();
             default:
                 return null;
         }

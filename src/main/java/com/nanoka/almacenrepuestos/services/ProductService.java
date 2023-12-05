@@ -7,10 +7,14 @@ package com.nanoka.almacenrepuestos.services;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.nanoka.almacenrepuestos.dtos.ProductDto;
 import com.nanoka.almacenrepuestos.models.Product;
+import com.nanoka.almacenrepuestos.models.Category;
+import com.nanoka.almacenrepuestos.models.Supplier;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,19 +25,47 @@ import java.util.List;
  */
 public class ProductService {
     public List<Product> products = new ArrayList<>();
+    private final List<ProductDto> productsDto = new ArrayList<>();
+    public List<Category> categories = new ArrayList<>();
+    public List<Supplier> suppliers = new ArrayList<>();
+    
+    public final CategoryService categoryService = new CategoryService();
+    public final SupplierService supplierService = new SupplierService();
+    
+    public ProductService() {
+        this.categoryService.loadData(this.categories);
+        this.supplierService.loadData(this.suppliers);
+        
+        this.categoryService.sortData();
+        this.supplierService.sortData();
+    }
 
-    private void loadData(List<Product> products) {
-        products.clear();
+    private void loadData() {
+        this.productsDto.clear();
+        this.products.clear();
         try (FileReader reader = new FileReader("products.json",StandardCharsets.UTF_8)) {
             Gson gson = new Gson();
-            products.addAll(gson.fromJson(reader, new TypeToken<List<Product>>(){}.getType()));
+            this.productsDto.addAll(gson.fromJson(reader, new TypeToken<List<ProductDto>>(){}.getType()));
+            for (ProductDto productDto : productsDto) {
+                Product product = Product.builder().id(productDto.getId())
+                        .name(productDto.getName())
+                        .measurementUnit(productDto.getMeasurementUnit())
+                        .category(categories.get(categoryService.binarySearch(categories, productDto.getCategoryId())))
+                        .supplier(suppliers.get(supplierService.binarySearch(suppliers, productDto.getSupplierId())))
+                        .stock(productDto.getStock())
+                        .stockMin(productDto.getStockMin())
+                        .price(productDto.getPrice())
+                        .build();
+                this.products.add(product);
+            }
+            quicksort();
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
     }
     
     public List<Product> getProducts() {
-        this.refreshData();
+        this.loadData();
         return this.products;
     }
     
@@ -54,26 +86,43 @@ public class ProductService {
      * @param email Correo del proveedor
      * @return Codigo de respuesta
      */
-    public int save(String ruc, String name, String tel, String email){
-        /*List<Product> products = new ArrayList<>();
-        loadData(products);
-        int isExist = this.isProductExist(products, Product.builder().get.build());
+    public int save(Category category, Supplier supplier, String name, String measurementUnit, int stock, int stockMin, BigDecimal price){
+        int isExist = this.isProductExist(this.products, Product.builder().name(name).build());
         if(isExist != 0){
             return isExist;
         }
-        int id = products.isEmpty() ? 0 : products.get(products.size() - 1).getId() + 1;
+        int id = (productsDto.isEmpty() ? 0 : this.productsDto.get(this.productsDto.size() - 1).getId()) + 1;
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try (FileWriter writer = new FileWriter("products.json",StandardCharsets.UTF_8)) {
-            Product product = Product.builder().id(id).ruc(ruc).name(name).tel(tel).email(email).build();
-            products.add(product);
-            gson.toJson(products, writer);
+            Product product = Product.builder()
+                                    .id(id)
+                                    .name(name)
+                                    .measurementUnit(measurementUnit)
+                                    .category(category)
+                                    .supplier(supplier)
+                                    .stock(stock)
+                                    .stockMin(stockMin)
+                                    .price(price)
+                                    .build();
+            ProductDto productDto = ProductDto.builder()
+                                    .id(id)
+                                    .name(name)
+                                    .measurementUnit(measurementUnit)
+                                    .categoryId(category.getId())
+                                    .supplierId(supplier.getId())
+                                    .stock(stock)
+                                    .stockMin(stockMin)
+                                    .price(price)
+                                    .build();
+            this.productsDto.add(productDto);
+            gson.toJson(this.productsDto, writer);
             this.products.add(0,product);
+            this.quicksort();
             return 0;
         } catch (IOException e) {
             System.out.println(e.getMessage());
             return 1;
-        }*/
-        return 0;
+        }
     }
     /**
      * Edita los datos del proveedor
@@ -85,32 +134,30 @@ public class ProductService {
      * @param email Correo del proveedor
      * @return Codigo de respuesta
      */
-    public int update(int id, int localIndex, String ruc, String name, String tel, String email) {
-        /*List<Product> products = new ArrayList<>();
-        loadData(products);
-        int index = binarySearch(products, id);
+    public int update(int id, int localIndex, Category category, Supplier supplier, String name, String measurementUnit, int stock, int stockMin, BigDecimal price) {
+        int index = binarySearch(id);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         if(index >= 0){
-            if(products.get(index).getRuc().equalsIgnoreCase(ruc)
-                    && products.get(index).getName().equalsIgnoreCase(name)
-                    && products.get(index).getEmail().equalsIgnoreCase(email)
-                    && products.get(index).getTel().equalsIgnoreCase(tel)){
-                return 0;
-            }
-            int isExist = this.isProductExist(products, Product.builder().id(id).ruc(ruc).name(name).email(email).tel(tel).build());
+            int isExist = this.isProductExist(products, Product.builder().id(id).name(name).build());
             if(isExist != 0){
                 return isExist;
             }
             try (FileWriter writer = new FileWriter("products.json",StandardCharsets.UTF_8)) {
-                products.get(index).setRuc(ruc);
-                products.get(index).setName(name);
-                products.get(index).setTel(tel);
-                products.get(index).setEmail(email);
-                gson.toJson(products, writer);
-                this.products.get(localIndex).setRuc(ruc);
+                this.productsDto.get(index).setName(name);
+                this.productsDto.get(index).setMeasurementUnit(measurementUnit);
+                this.productsDto.get(index).setCategoryId(category.getId());
+                this.productsDto.get(index).setSupplierId(supplier.getId());
+                this.productsDto.get(index).setStock(stock);
+                this.productsDto.get(index).setStockMin(stockMin);
+                this.productsDto.get(index).setPrice(price);
+                gson.toJson(this.productsDto, writer);
                 this.products.get(localIndex).setName(name);
-                this.products.get(localIndex).setTel(tel);
-                this.products.get(localIndex).setEmail(email);
+                this.products.get(localIndex).setMeasurementUnit(measurementUnit);
+                this.products.get(localIndex).setCategory(category);
+                this.products.get(localIndex).setSupplier(supplier);
+                this.products.get(localIndex).setStock(stock);
+                this.products.get(localIndex).setStockMin(stockMin);
+                this.products.get(localIndex).setPrice(price);
                 return 0;
             } catch (IOException e) {
                 System.out.println(e.getMessage());
@@ -118,19 +165,16 @@ public class ProductService {
             }
         }else{
             return 3;
-        }*/
-        return 0;
+        }
     }
     
     public boolean delete(int id, int localIndex) {
-        List<Product> products = new ArrayList<>();
-        loadData(products);
-        int index = binarySearch(products, id);
+        int index = binarySearch(id);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         if(index >= 0){
             try (FileWriter writer = new FileWriter("products.json",StandardCharsets.UTF_8)) {
-                products.remove(index);
-                gson.toJson(products, writer);
+                this.productsDto.remove(index);
+                gson.toJson(this.productsDto, writer);
                 this.products.remove(localIndex);
                 return true;
             } catch (IOException e) {
@@ -148,39 +192,23 @@ public class ProductService {
      * @return Regresa 0 si todo sale bien
      */
     public int isProductExist(List<Product> products, Product productToCheck) {
-        /*for (Product product : products) {
-            if(product.getId() != productToCheck.getId()) {
-               if(product.getRuc().equalsIgnoreCase(productToCheck.getRuc())){
-                    return 21;
-                }
-                if (product.getName().equalsIgnoreCase(productToCheck.getName())) {
-                    return 22;
-                }
-                if(product.getTel().equalsIgnoreCase(productToCheck.getTel())) {
-                    return 23;
-                }
-                if(product.getEmail().equalsIgnoreCase(productToCheck.getEmail())) {
-                    return 24;
-                } 
+        for (Product product : products) {
+            if(product.getId() != productToCheck.getId() && product.getName().equalsIgnoreCase(productToCheck.getName())) {
+                return 2;
             }
-        }*/
+        }
         return 0;
     }
     
-    private void refreshData() {
-        loadData(this.products);
-        quicksort(this.products);
-    }
-    
-    private void quicksort(List<Product> products){
-        if(products == null || products.isEmpty()) {
+    public void quicksort(){
+        if(this.products == null || this.products.isEmpty()) {
             return;
         }
-        sort(products,0,products.size() - 1);        
+        sort(this.products,0,this.products.size() - 1);        
     }
     
     private void sort(List<Product> products, int left, int right){
-        /*int i = left;
+        int i = left;
         int j = right;
         Product pivot = products.get(left + (right - left) / 2);
         while(i <= j) {
@@ -195,7 +223,15 @@ public class ProductService {
                 i++;
                 j--;
             }
-        }*/
+        }
+        
+        if(left < j) {
+            sort(products, left, j);
+        }
+        
+        if(i < right){
+            sort(products, i, right);
+        }
     }
     
     private void swap(List<Product> products, int i, int j){
@@ -204,14 +240,14 @@ public class ProductService {
         products.set(j,temp);
     }
     
-    private static int binarySearch(List<Product> products, int id) {
+    private int binarySearch(int id) {
         int start = 0;
-        int end = products.size() - 1;
+        int end = this.productsDto.size() - 1;
         
         while(start <= end) {
             int middle = start + (end - start) / 2;
-            Product currentProduct = products.get(middle);
-            int currentId = currentProduct.getId();
+            ProductDto currentProductDto = this.productsDto.get(middle);
+            int currentId = currentProductDto.getId();
             
             if(currentId == id) {
                 return middle;

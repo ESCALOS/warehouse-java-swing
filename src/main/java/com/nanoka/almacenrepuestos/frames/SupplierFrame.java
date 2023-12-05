@@ -57,7 +57,7 @@ public class SupplierFrame extends javax.swing.JFrame {
         btn_add = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Categorías");
+        setTitle("Proveedores");
         setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N

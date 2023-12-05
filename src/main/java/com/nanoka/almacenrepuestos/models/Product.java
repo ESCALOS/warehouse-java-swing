@@ -5,20 +5,54 @@
 package com.nanoka.almacenrepuestos.models;
 
 import java.math.BigDecimal;
+import java.util.Objects;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Product {
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class Product implements Comparable<Product> {
     int id;
     String name;
     String measurementUnit;
-    int Stock;
-    int StockMin;
+    Category category;
+    Supplier supplier;
+    int stock;
+    int stockMin;
     BigDecimal price;
+
+    @Override
+    public int compareTo(Product o) {
+        return this.name.compareTo(o.getName());
+    }
+    
+    public String toString() {
+        return this.name;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Product other = (Product) obj;
+        return id == other.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

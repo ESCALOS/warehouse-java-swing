@@ -22,7 +22,7 @@ public class CategoryService {
 
     public List<Category> categories = new ArrayList<>();
     
-    private void loadData(List<Category> categories) {
+    public void loadData(List<Category> categories) {
         categories.clear();
         try (FileReader reader = new FileReader("categories.json",StandardCharsets.UTF_8)) {
             Gson gson = new Gson();
@@ -33,7 +33,7 @@ public class CategoryService {
     }
     
     public List<Category> getCategories() {
-        this.refreshData();
+        this.sortData();
         return this.categories;
     }
     
@@ -53,7 +53,7 @@ public class CategoryService {
         if(this.isCategoryExist(categories,Category.builder().name(name).build())){
             return 2;
         }
-        int id = categories.isEmpty() ? 0 : categories.get(categories.size() - 1).getId() + 1;
+        int id = (categories.isEmpty() ? 0 : categories.get(categories.size() - 1).getId()) + 1;
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try (FileWriter writer = new FileWriter("categories.json",StandardCharsets.UTF_8)) {
             Category category = Category.builder().id(id).name(name).build();
@@ -82,7 +82,6 @@ public class CategoryService {
             try (FileWriter writer = new FileWriter("categories.json",StandardCharsets.UTF_8)) {
                 categories.get(index).setName(name);
                 gson.toJson(categories, writer);
-                this.categories.get(localIndex).setName(name);
                 return 0;
             } catch (IOException e) {
                 System.out.println(e.getMessage());
@@ -115,25 +114,23 @@ public class CategoryService {
     
     public boolean isCategoryExist(List<Category> categories, Category categoryToCheck) {
         for (Category category : categories) {
-            if(category.getId() != categoryToCheck.getId()){
-                if (category.getName().equalsIgnoreCase(categoryToCheck.getName())) {
-                    return true;
-                }
+            if(category.getId() != categoryToCheck.getId() && category.getName().equalsIgnoreCase(categoryToCheck.getName())){
+                return true;
             }
         }
         return false;
     }
     
-    private void refreshData() {
+    public void sortData() {
         loadData(this.categories);
-        quicksort(this.categories);
+        quicksort();
     }
     
-    private static void quicksort(List<Category> categories) {
-        if(categories == null || categories.isEmpty()) {
+    private void quicksort() {
+        if(this.categories == null || this.categories.isEmpty()) {
             return;
         }
-        sort(categories, 0, categories.size() - 1);
+        sort(this.categories, 0, this.categories.size() - 1);
     }
     
     private static void sort(List<Category> categories, int left, int right) {
@@ -169,7 +166,7 @@ public class CategoryService {
         categories.set(j, temp);
     }
     
-    private static int binarySearch(List<Category> categories, int id) {
+    public int binarySearch(List<Category> categories, int id) {
         int start = 0;
         int end = categories.size() - 1;
         

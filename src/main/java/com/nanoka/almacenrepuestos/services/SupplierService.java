@@ -22,7 +22,7 @@ import java.util.List;
 public class SupplierService {
     public List<Supplier> suppliers = new ArrayList<>();
 
-    private void loadData(List<Supplier> suppliers) {
+    public void loadData(List<Supplier> suppliers) {
         suppliers.clear();
         try (FileReader reader = new FileReader("suppliers.json",StandardCharsets.UTF_8)) {
             Gson gson = new Gson();
@@ -33,7 +33,7 @@ public class SupplierService {
     }
     
     public List<Supplier> getSuppliers() {
-        this.refreshData();
+        this.sortData();
         return this.suppliers;
     }
     
@@ -61,7 +61,7 @@ public class SupplierService {
         if(isExist != 0){
             return isExist;
         }
-        int id = suppliers.isEmpty() ? 0 : suppliers.get(suppliers.size() - 1).getId() + 1;
+        int id = (suppliers.isEmpty() ? 0 : suppliers.get(suppliers.size() - 1).getId()) + 1;
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try (FileWriter writer = new FileWriter("suppliers.json",StandardCharsets.UTF_8)) {
             Supplier supplier = Supplier.builder().id(id).ruc(ruc).name(name).tel(tel).email(email).build();
@@ -106,10 +106,6 @@ public class SupplierService {
                 suppliers.get(index).setTel(tel);
                 suppliers.get(index).setEmail(email);
                 gson.toJson(suppliers, writer);
-                this.suppliers.get(localIndex).setRuc(ruc);
-                this.suppliers.get(localIndex).setName(name);
-                this.suppliers.get(localIndex).setTel(tel);
-                this.suppliers.get(localIndex).setEmail(email);
                 return 0;
             } catch (IOException e) {
                 System.out.println(e.getMessage());
@@ -165,16 +161,16 @@ public class SupplierService {
         return 0;
     }
     
-    private void refreshData() {
+    public void sortData() {
         loadData(this.suppliers);
-        quicksort(this.suppliers);
+        quicksort();
     }
     
-    private void quicksort(List<Supplier> suppliers){
-        if(suppliers == null || suppliers.isEmpty()) {
+    private void quicksort(){
+        if(this.suppliers == null || this.suppliers.isEmpty()) {
             return;
         }
-        sort(suppliers,0,suppliers.size() - 1);        
+        sort(this.suppliers,0,this.suppliers.size() - 1);        
     }
     
     private void sort(List<Supplier> suppliers, int left, int right){
@@ -194,6 +190,14 @@ public class SupplierService {
                 j--;
             }
         }
+        
+        if(left < j) {
+            sort(suppliers, left, j);
+        }
+        
+        if(i < right){
+            sort(suppliers, i, right);
+        }
     }
     
     private void swap(List<Supplier> suppliers, int i, int j){
@@ -202,7 +206,7 @@ public class SupplierService {
         suppliers.set(j,temp);
     }
     
-    private static int binarySearch(List<Supplier> suppliers, int id) {
+    public int binarySearch(List<Supplier> suppliers, int id) {
         int start = 0;
         int end = suppliers.size() - 1;
         

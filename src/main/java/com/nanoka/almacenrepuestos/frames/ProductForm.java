@@ -5,101 +5,138 @@
 package com.nanoka.almacenrepuestos.frames;
 
 import javax.swing.JOptionPane;
+import com.nanoka.almacenrepuestos.models.Product;
+import com.nanoka.almacenrepuestos.models.Category;
 import com.nanoka.almacenrepuestos.models.Supplier;
+import java.math.BigDecimal;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
+import java.text.NumberFormat;
 
 /**
  *
  * @author carlo
  */
 public class ProductForm extends javax.swing.JDialog {
-    private final SupplierFrame supplierFrame;
+    private final ProductFrame productFrame;
     private final int id;
-    private final int supplierIndex;
+    private final int productIndex;
     /**
-     * Creates new form SupplierForm
+     * Creates new form ProductForm
      */
-    public ProductForm(SupplierFrame parent, boolean modal) {
+    public ProductForm(ProductFrame parent, boolean modal) {
         super(parent, modal);
-        this.supplierFrame = parent;
+        this.productFrame = parent;
         this.id = 0;
-        this.supplierIndex = -1;
-        setTitle("Agregar Proveedor");
+        this.productIndex = -1;
+        setTitle("Agregar Producto");
         initComponents();
+        loadCategories();
+        loadSuppliers();
+        ft_price.setValue(BigDecimal.ZERO);
+        this.setFormatPrice();
     }
     
-    public ProductForm(SupplierFrame parent, boolean modal,int id, int supplierIndex, Supplier currentSupplier) {
+    public ProductForm(ProductFrame parent, boolean modal,int id, int productIndex, Product currentProduct) {
         super(parent, modal);
-        this.supplierFrame = parent;
+        this.productFrame = parent;
         this.id = id;
-        this.supplierIndex = supplierIndex;
-        setTitle("Editar Proveedor");
+        this.productIndex = productIndex;
+        setTitle("Editar Producto");
         initComponents();
-        txt_ruc.setText(currentSupplier.getRuc());
-        txt_name.setText(currentSupplier.getName());
-        txt_tel.setText(currentSupplier.getTel());
-        txt_email.setText(currentSupplier.getEmail());
+        loadCategories();
+        loadSuppliers();
+        cb_category.setSelectedItem(this.productFrame.productService.categories.get(this.productFrame.productService.categoryService.binarySearch(this.productFrame.productService.categories, currentProduct.getCategory().getId())));
+        cb_supplier.setSelectedItem(this.productFrame.productService.suppliers.get(this.productFrame.productService.supplierService.binarySearch(this.productFrame.productService.suppliers, currentProduct.getSupplier().getId())));
+        txt_name.setText(currentProduct.getName());
+        txt_measurement_unit.setText(currentProduct.getMeasurementUnit());
+        sp_stock.setValue(currentProduct.getStock());
+        sp_stock_min.setValue(currentProduct.getStockMin());
+        ft_price.setValue(currentProduct.getPrice());
+        this.setFormatPrice();
     }
     
-    private void save(String ruc, String name, String tel, String email) {
-        if(!this.validedForm(ruc, name, tel, email)){
+    private void setFormatPrice() {
+        NumberFormatter formatter = new NumberFormatter();
+        formatter.setValueClass(BigDecimal.class);
+        formatter.setMinimum(BigDecimal.ZERO);
+        formatter.setFormat(NumberFormat.getInstance());
+        formatter.setAllowsInvalid(false);
+        DefaultFormatterFactory factory = new DefaultFormatterFactory(formatter);
+        ft_price.setFormatterFactory(factory);
+    }
+    
+    private void save(Category category, Supplier supplier, String name, String measurementUnit, int stock, int stockMin, BigDecimal price) {
+        if(!this.validedForm(name, measurementUnit, stock, stockMin, price)){
             return;
         }
-        int state = supplierFrame.supplierService.save(ruc, name, tel, email);
+        int state = productFrame.productService.save(category, supplier, name, measurementUnit, stock, stockMin, price);
         switch (state) {
             case 0 -> {
                 JOptionPane.showMessageDialog(rootPane, "Agregado correctamente");
-                txt_ruc.setText("");
                 txt_name.setText("");
-                txt_tel.setText("");
-                txt_email.setText("");
-                supplierFrame.refreshData();
+                txt_measurement_unit.setText("");
+                sp_stock.setValue(1);
+                sp_stock_min.setValue(1);
+                productFrame.refreshData();
             }
-            case 21 -> JOptionPane.showMessageDialog(rootPane, "El ruc ya existe");
-            case 22 -> JOptionPane.showMessageDialog(rootPane, "La nombre ya existe");
-            case 23 -> JOptionPane.showMessageDialog(rootPane, "El teléfono ya existe");
-            case 24 -> JOptionPane.showMessageDialog(rootPane, "El correo ya existe");
+            case 2 -> JOptionPane.showMessageDialog(rootPane, "El producto ya existe");
             default -> JOptionPane.showMessageDialog(rootPane, "No se pudo guardar");
         }
     }
     
-    public void update(String ruc, String name, String tel, String email){
-        if(!this.validedForm(ruc, name, tel, email)){
+    public void update(Category category, Supplier supplier, String name, String measurementUnit, int stock, int stockMin, BigDecimal price){
+        if(!this.validedForm(name, measurementUnit, stock, stockMin, price)){
             return;
         }
-        int state = supplierFrame.supplierService.update(id,this.supplierIndex,ruc, name, tel, email);
+        int state = productFrame.productService.update(id,this.productIndex,category, supplier, name, measurementUnit, stock, stockMin, price);
         switch (state) {
             case 0 -> {
                 JOptionPane.showMessageDialog(rootPane, "Editado correctamente");
-                supplierFrame.refreshData();
+                productFrame.refreshData();
                 dispose();
             }
-            case 21 -> JOptionPane.showMessageDialog(rootPane, "El ruc ya existe");
-            case 22 -> JOptionPane.showMessageDialog(rootPane, "La nombre ya existe");
-            case 23 -> JOptionPane.showMessageDialog(rootPane, "El teléfono ya existe");
-            case 24 -> JOptionPane.showMessageDialog(rootPane, "El correo ya existe");
+            case 2 -> JOptionPane.showMessageDialog(rootPane, "El producto ya existe");
             case 3 -> JOptionPane.showMessageDialog(rootPane, "El proveedor no existe no existe");
             default -> JOptionPane.showMessageDialog(rootPane, "No se pudo guardar");
         }
     }
     
-    private boolean validedForm(String ruc,String name, String tel, String email){
-        if(ruc.isBlank()) {
-            JOptionPane.showMessageDialog(rootPane, "El ruc es requerido");
-            return false;
-        }
+    private boolean validedForm(String name,String measurementUnit, int stock, int stockMin, BigDecimal price){
         if(name.isBlank()) {
             JOptionPane.showMessageDialog(rootPane, "El nombre es requerido");
             return false;
         }
-        if(tel.isBlank()) {
-            JOptionPane.showMessageDialog(rootPane, "El telefono es requerido");
+        if(measurementUnit.isBlank()) {
+            JOptionPane.showMessageDialog(rootPane, "La unidad de medida es requerida");
             return false;
         }
-        if(email.isBlank()) {
-            JOptionPane.showMessageDialog(rootPane, "El correo es requerido");
+        if(stock < 0) {
+            JOptionPane.showMessageDialog(rootPane, "El stock no puede ser negativo");
+            return false;
+        }
+        if(stockMin < 1) {
+            JOptionPane.showMessageDialog(rootPane, "El stock mínimo debe ser mayor a 0");
+            return false;
+        }
+        
+        if(price.compareTo(BigDecimal.ZERO) < 0) {
+            JOptionPane.showMessageDialog(rootPane, "El precio no puede ser negativo");
             return false;
         }
         return true;
+    }
+    
+    private void loadCategories() {
+        for(Category category : this.productFrame.productService.categoryService.categories) {
+            cb_category.addItem(category);
+        }
+    }
+    
+    private void loadSuppliers() {
+        for(Supplier supplier : this.productFrame.productService.supplierService.suppliers) {
+            cb_supplier.addItem(supplier);
+        }
     }
 
     /**
@@ -114,13 +151,20 @@ public class ProductForm extends javax.swing.JDialog {
         btn_add = new javax.swing.JButton();
         btn_close = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        txt_ruc = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
         txt_name = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txt_measurement_unit = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txt_tel = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txt_email = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        cb_category = new javax.swing.JComboBox<>();
+        cb_supplier = new javax.swing.JComboBox<>();
+        sp_stock = new javax.swing.JSpinner();
+        sp_stock_min = new javax.swing.JSpinner();
+        ft_price = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -144,14 +188,27 @@ public class ProductForm extends javax.swing.JDialog {
             }
         });
 
-        jLabel1.setText("RUC:");
+        jLabel1.setText("Nombre:");
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
 
-        jLabel2.setText("Nombre:");
+        jLabel2.setText("Unidad de medida:");
 
-        jLabel3.setText("Telefono:");
+        jLabel3.setText("Cantidad");
 
-        jLabel4.setText("Correo:");
+        jLabel4.setText("Cantidad mínima:");
+
+        jLabel5.setText("Valor:");
+
+        jLabel6.setText("S/.");
+
+        jLabel7.setText("Categoría:");
+
+        jLabel8.setText("Proveedor:");
+
+        ft_price.setColumns(10);
+        ft_price.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
+        ft_price.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        ft_price.setActionCommand("<Not Set>");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -160,46 +217,73 @@ public class ProductForm extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btn_add, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_close, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4))
+                        .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btn_add, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btn_close, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel3))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ft_price))
+                            .addComponent(sp_stock_min)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8))
+                        .addGap(71, 71, 71)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_name)
+                            .addComponent(cb_category, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cb_supplier, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel4))
+                            .addComponent(jLabel3))
                         .addGap(25, 25, 25)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_ruc, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
-                            .addComponent(txt_name)
-                            .addComponent(txt_tel, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txt_email))
-                        .addGap(20, 20, 20))))
+                            .addComponent(sp_stock)
+                            .addComponent(txt_measurement_unit))))
+                .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_ruc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
+                    .addComponent(jLabel7)
+                    .addComponent(cb_category, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(cb_supplier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
                     .addComponent(txt_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txt_measurement_unit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txt_tel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(sp_stock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(txt_email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(sp_stock_min, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6)
+                    .addComponent(ft_price, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_close)
@@ -217,9 +301,9 @@ public class ProductForm extends javax.swing.JDialog {
 
     private void btn_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addActionPerformed
         if(this.id == 0) {
-            this.save(txt_ruc.getText(),txt_name.getText(),txt_tel.getText(),txt_email.getText());
+            this.save((Category) cb_category.getSelectedItem(),(Supplier) cb_supplier.getSelectedItem(),txt_name.getText(),txt_measurement_unit.getText(), (int)sp_stock.getValue(),(int) sp_stock_min.getValue(), (BigDecimal) ft_price.getValue());
         }else{
-            this.update(txt_ruc.getText(),txt_name.getText(),txt_tel.getText(),txt_email.getText());
+            this.update((Category) cb_category.getSelectedItem(),(Supplier) cb_supplier.getSelectedItem(),txt_name.getText(),txt_measurement_unit.getText(), (int)sp_stock.getValue(),(int) sp_stock_min.getValue(), (BigDecimal) ft_price.getValue());
         }
     }//GEN-LAST:event_btn_addActionPerformed
 
@@ -256,7 +340,7 @@ public class ProductForm extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ProductForm dialog = new ProductForm(new SupplierFrame(), true);
+                ProductForm dialog = new ProductForm(new ProductFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -271,13 +355,20 @@ public class ProductForm extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_add;
     private javax.swing.JButton btn_close;
+    private javax.swing.JComboBox<Category> cb_category;
+    private javax.swing.JComboBox<Supplier> cb_supplier;
+    private javax.swing.JFormattedTextField ft_price;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField txt_email;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JSpinner sp_stock;
+    private javax.swing.JSpinner sp_stock_min;
+    private javax.swing.JTextField txt_measurement_unit;
     private javax.swing.JTextField txt_name;
-    private javax.swing.JTextField txt_ruc;
-    private javax.swing.JTextField txt_tel;
     // End of variables declaration//GEN-END:variables
 }

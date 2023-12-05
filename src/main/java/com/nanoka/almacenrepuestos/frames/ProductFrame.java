@@ -27,7 +27,7 @@ public class ProductFrame extends javax.swing.JFrame {
         initComponents();
         products.addAll(productService.getProducts());
         productTableModel = new ProductTable(products);
-        //product_table.setModel(productTableModel);
+        product_table.setModel(productTableModel);
     }
 
     public void refreshData() {
@@ -49,7 +49,7 @@ public class ProductFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txt_search = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        supplier_table = new javax.swing.JTable();
+        product_table = new javax.swing.JTable();
         btn_search = new javax.swing.JButton();
         btn_update = new javax.swing.JButton();
         btn_delete = new javax.swing.JButton();
@@ -57,19 +57,19 @@ public class ProductFrame extends javax.swing.JFrame {
         btn_add = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Categorías");
+        setTitle("Productos");
         setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Lista de Proveedores");
+        jLabel1.setText("Lista de Productos");
 
         jLabel2.setText("Buscar: ");
 
-        supplier_table.setColumnSelectionAllowed(true);
-        supplier_table.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(supplier_table);
-        supplier_table.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        product_table.setColumnSelectionAllowed(true);
+        product_table.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(product_table);
+        product_table.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         btn_search.setBackground(new java.awt.Color(0, 102, 255));
         btn_search.setForeground(new java.awt.Color(255, 255, 255));
@@ -181,10 +181,10 @@ public class ProductFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
-        /*int selectedRow = product_table.getSelectedRow();
+        int selectedRow = product_table.getSelectedRow();
         if(selectedRow != -1) {
             int id = this.products.get(selectedRow).getId();
-            int option = JOptionPane.showConfirmDialog(rootPane, "¿Estas seguro de eliminar al proveedor "+ product_table.getValueAt(selectedRow, 1).toString() +"?","Confirmar Acción",JOptionPane.YES_NO_OPTION);
+            int option = JOptionPane.showConfirmDialog(rootPane, "¿Estas seguro de eliminar el producto "+ product_table.getValueAt(selectedRow, 0).toString() +"?","Confirmar Acción",JOptionPane.YES_NO_OPTION);
             if(option == JOptionPane.YES_OPTION) {
                 if(productService.delete(id,selectedRow)) {
                     JOptionPane.showMessageDialog(rootPane, "Eliminado correctamente");
@@ -197,7 +197,7 @@ public class ProductFrame extends javax.swing.JFrame {
             }
         }else {
             JOptionPane.showMessageDialog(rootPane, "Por favor, selecciona una fila para eliminar");
-        }*/
+        }
         
     }//GEN-LAST:event_btn_deleteActionPerformed
 
@@ -213,19 +213,19 @@ public class ProductFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_searchActionPerformed
 
     private void btn_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addActionPerformed
-        //ProductForm productForm = new ProductForm(this, true);
-        //productForm.setVisible(true);
+        ProductForm productForm = new ProductForm(this, true);
+        productForm.setVisible(true);
     }//GEN-LAST:event_btn_addActionPerformed
 
     private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
-        /*int selectedRow = product_table.getSelectedRow();
+        int selectedRow = product_table.getSelectedRow();
         if(selectedRow != -1) {
             int id = this.products.get(selectedRow).getId();
             ProductForm productForm = new ProductForm(this, true, id, selectedRow,this.products.get(selectedRow));
             productForm.setVisible(true);
         }else{
             JOptionPane.showMessageDialog(rootPane, "Por favor, selecciona una fila para editar");
-        }*/
+        }
     }//GEN-LAST:event_btn_updateActionPerformed
 
     /**
@@ -279,7 +279,7 @@ public class ProductFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable supplier_table;
+    private javax.swing.JTable product_table;
     private javax.swing.JTextField txt_search;
     // End of variables declaration//GEN-END:variables
 }

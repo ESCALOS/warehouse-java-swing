@@ -58,6 +58,11 @@ public class Options extends javax.swing.JFrame {
         btn_product.setText("Productos");
         btn_product.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btn_product.setPreferredSize(new java.awt.Dimension(125, 25));
+        btn_product.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_productActionPerformed(evt);
+            }
+        });
 
         btn_logout.setText("Movimientos");
         btn_logout.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -108,6 +113,12 @@ public class Options extends javax.swing.JFrame {
         SupplierFrame supplierFrame = new SupplierFrame();
         supplierFrame.setVisible(true);
     }//GEN-LAST:event_btn_supplierActionPerformed
+
+    private void btn_productActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_productActionPerformed
+        dispose();
+        ProductFrame productFrame = new ProductFrame();
+        productFrame.setVisible(true);
+    }//GEN-LAST:event_btn_productActionPerformed
 
     /**
      * @param args the command line arguments

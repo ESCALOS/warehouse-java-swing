@@ -4,15 +4,18 @@
  */
 package com.nanoka.almacenrepuestos.models;
 
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -27,5 +30,26 @@ public class Supplier implements Comparable<Supplier> {
     @Override
     public int compareTo(Supplier o) {
         return this.name.compareTo(o.getName());
+    }
+    
+    public String toString() {
+        return this.name;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Supplier other = (Supplier) obj;
+        return id == other.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

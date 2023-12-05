@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "name": "Nike T38",
+    "measurementUnit": "Caja",
+    "categoryId": 10,
+    "supplierId": 1,
+    "stock": 33,
+    "stockMin": 53,
+    "price": 644.91
+  },
+  {
+    "id": 2,
+    "name": "Mueble",
+    "measurementUnit": "Six Pack",
+    "categoryId": 17,
+    "supplierId": 3,
+    "stock": 30,
+    "stockMin": 14,
+    "price": 22.99
+  },
+  {
+    "id": 3,
+    "name": "Access",
+    "measurementUnit": "sda",
+    "categoryId": 3,
+    "supplierId": 2,
+    "stock": 10,
+    "stockMin": 20,
+    "price": 30.21
+  },
+  {
+    "id": 4,
+    "name": "Zapato",
+    "measurementUnit": "sda",
+    "categoryId": 3,
+    "supplierId": 2,
+    "stock": 3,
+    "stockMin": 3,
+    "price": 0.9
+  },
+  {
+    "id": 5,
+    "name": "12",
+    "measurementUnit": "asd",
+    "categoryId": 3,
+    "supplierId": 3,
+    "stock": 2,
+    "stockMin": 2,
+    "price": 1111.22
+  },
+  {
+    "id": 6,
+    "name": "Alformbra 60x60cm",
+    "measurementUnit": "Unidad",
+    "categoryId": 6,
+    "supplierId": 1,
+    "stock": 220,
+    "stockMin": 120,
+    "price": 1222
+  }
+]
