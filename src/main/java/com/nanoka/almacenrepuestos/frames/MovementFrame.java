@@ -15,21 +15,21 @@ public class MovementFrame extends javax.swing.JFrame {
 
     private final List<Movement> movements = new ArrayList<>();
     public final MovementService movementService = new MovementService();
-    //private final MovementTable movementTableModel;
+    private final MovementTable movementTableModel;
     /**
      * Creates new form Movement
      */
     public MovementFrame() {
         initComponents();
-        /*movements.addAll(movementService.getMovements());
+        movements.addAll(movementService.getMovements());
         movementTableModel = new MovementTable(movements);
-        movement_table.setModel(movementTableModel);*/
+        movement_table.setModel(movementTableModel);
     }
 
     public void refreshData() {
-        /*this.movements.clear();
+        this.movements.clear();
         this.movements.addAll(movementService.getMovements());
-        movementTableModel.fireTableDataChanged();*/
+        movementTableModel.fireTableDataChanged();
     }
     
     /**
@@ -87,7 +87,7 @@ public class MovementFrame extends javax.swing.JFrame {
 
         btn_delete.setBackground(new java.awt.Color(255, 0, 0));
         btn_delete.setForeground(new java.awt.Color(255, 255, 255));
-        btn_delete.setText("Eliminar");
+        btn_delete.setText("Anular");
         btn_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_deleteActionPerformed(evt);
@@ -207,19 +207,14 @@ public class MovementFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_searchActionPerformed
 
     private void btn_inputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_inputActionPerformed
-        /*MovementForm movementForm = new MovementForm(this, true);
-        movementForm.setVisible(true);*/
+        InputForm inputForm = new InputForm(this, true);
+        inputForm.setVisible(true);
     }//GEN-LAST:event_btn_inputActionPerformed
 
     private void btn_outputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_outputActionPerformed
-        /*int selectedRow = movement_table.getSelectedRow();
-        if(selectedRow != -1) {
-            int id = this.movements.get(selectedRow).getId();
-            MovementForm movementForm = new MovementForm(this, true, id, selectedRow,this.movements.get(selectedRow));
-            movementForm.setVisible(true);
-        }else{
-            JOptionPane.showMessageDialog(rootPane, "Por favor, selecciona una fila para editar");
-        }*/
+        OutputForm outputForm = new OutputForm(this, true);
+        outputForm.setVisible(true);
+        
     }//GEN-LAST:event_btn_outputActionPerformed
 
     /**

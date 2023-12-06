@@ -5,9 +5,9 @@
     "measurementUnit": "Caja",
     "categoryId": 10,
     "supplierId": 1,
-    "stock": 33,
+    "stock": 40,
     "stockMin": 53,
-    "price": 644.91
+    "price": 800.00
   },
   {
     "id": 2,
@@ -45,9 +45,9 @@
     "measurementUnit": "Decena",
     "categoryId": 3,
     "supplierId": 3,
-    "stock": 2,
+    "stock": 12,
     "stockMin": 2,
-    "price": 56.14
+    "price": 1056.14
   },
   {
     "id": 6,

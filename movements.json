@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "productId": 6,
+    "quantity": 10,
+    "movementType": "Ingreso",
+    "price": 100,
+    "datetime": "23/11/2023 08:15:56"
+  },
+  {
+    "id": 2,
+    "productId": 2,
+    "quantity": 12,
+    "movementType": "Ingreso",
+    "price": 11,
+    "datetime": "06/12/2023 12:55:57"
+  },
+  {
+    "id": 3,
+    "productId": 1,
+    "quantity": 6,
+    "movementType": "Ingreso",
+    "price": 120,
+    "datetime": "06/12/2023 12:59:37"
+  },
+  {
+    "id": 4,
+    "productId": 1,
+    "quantity": 4,
+    "movementType": "Salida",
+    "price": 80.00,
+    "datetime": "06/12/2023 13:00:37"
+  },
+  {
+    "id": 5,
+    "productId": 1,
+    "quantity": 4,
+    "movementType": "Ingreso",
+    "price": 80,
+    "datetime": "06/12/2023 13:05:21"
+  },
+  {
+    "id": 6,
+    "productId": 5,
+    "quantity": 10,
+    "movementType": "Ingreso",
+    "price": 1000,
+    "datetime": "06/12/2023 13:06:36"
+  }
+]

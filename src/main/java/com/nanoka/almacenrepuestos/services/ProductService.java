@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import com.nanoka.almacenrepuestos.dtos.ProductDto;
 import com.nanoka.almacenrepuestos.models.Product;
 import com.nanoka.almacenrepuestos.models.Category;
+import com.nanoka.almacenrepuestos.models.MovementType;
 import com.nanoka.almacenrepuestos.models.Supplier;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -32,23 +33,14 @@ public class ProductService {
         this.supplierService.sortData();
     }
 
-    private void loadData() {
+    public void loadData() {
         this.productsDto.clear();
         this.products.clear();
         try (FileReader reader = new FileReader("products.json",StandardCharsets.UTF_8)) {
             Gson gson = new Gson();
             this.productsDto.addAll(gson.fromJson(reader, new TypeToken<List<ProductDto>>(){}.getType()));
             for (ProductDto productDto : productsDto) {
-                Product product = Product.builder().id(productDto.getId())
-                        .name(productDto.getName())
-                        .measurementUnit(productDto.getMeasurementUnit())
-                        .category(categories.get(categoryService.binarySearch(categories, productDto.getCategoryId())))
-                        .supplier(suppliers.get(supplierService.binarySearch(suppliers, productDto.getSupplierId())))
-                        .stock(productDto.getStock())
-                        .stockMin(productDto.getStockMin())
-                        .price(productDto.getPrice())
-                        .build();
-                this.products.add(product);
+                this.products.add(dtoToProduct(productDto));
             }
             quicksort();
         } catch (IOException e) {
@@ -59,6 +51,23 @@ public class ProductService {
     public List<Product> getProducts() {
         this.loadData();
         return this.products;
+    }
+    
+    public ProductDto getProductDto(int id) {
+        int index = this.binarySearch(id);
+        return this.productsDto.get(index);
+    }
+    
+    public Product dtoToProduct(ProductDto productDto){
+       return Product.builder().id(productDto.getId())
+                        .name(productDto.getName())
+                        .measurementUnit(productDto.getMeasurementUnit())
+                        .category(categories.get(categoryService.binarySearch(categories, productDto.getCategoryId())))
+                        .supplier(suppliers.get(supplierService.binarySearch(suppliers, productDto.getSupplierId())))
+                        .stock(productDto.getStock())
+                        .stockMin(productDto.getStockMin())
+                        .price(productDto.getPrice())
+                        .build();
     }
     
     public List<Category> getCategories() {
@@ -188,6 +197,30 @@ public class ProductService {
         sort(this.products,0,this.products.size() - 1);        
     }
     
+    public int updateStock(MovementType movementType,int productId, int quantity, BigDecimal price) {
+        int index = binarySearch(productId);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        if(index >= 0){
+            try (FileWriter writer = new FileWriter("products.json",StandardCharsets.UTF_8)) {
+                if(movementType.equals(MovementType.Ingreso)){
+                    this.productsDto.get(index).setStock(this.productsDto.get(index).getStock() + quantity);
+                    this.productsDto.get(index).setPrice(this.productsDto.get(index).getPrice().add(price));
+                }else {
+                    this.productsDto.get(index).setStock(this.productsDto.get(index).getStock() - quantity);
+                    this.productsDto.get(index).setPrice(this.productsDto.get(index).getPrice().subtract(price));
+                }
+                gson.toJson(this.productsDto, writer);
+                return 0;
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+                return 1;
+            }
+        }else{
+            return 3;
+        }
+        
+    }
+    
     private void sort(List<Product> products, int left, int right){
         int i = left;
         int j = right;
@@ -221,7 +254,7 @@ public class ProductService {
         products.set(j,temp);
     }
     
-    private int binarySearch(int id) {
+    public int binarySearch(int id) {
         int start = 0;
         int end = this.productsDto.size() - 1;
         

@@ -3,6 +3,7 @@ D:\Proyectos\java\AlmacenRepuestos\src\main\java\com\nanoka\almacenrepuestos\mod
 D:\Proyectos\java\AlmacenRepuestos\src\main\java\com\nanoka\almacenrepuestos\frames\SupplierFrame.java
 D:\Proyectos\java\AlmacenRepuestos\src\main\java\com\nanoka\almacenrepuestos\dtos\MovementDto.java
 D:\Proyectos\java\AlmacenRepuestos\src\main\java\com\nanoka\almacenrepuestos\frames\CategoryFrame.java
+D:\Proyectos\java\AlmacenRepuestos\src\main\java\com\nanoka\almacenrepuestos\adapters\LocalDateTimeAdapter.java
 D:\Proyectos\java\AlmacenRepuestos\src\main\java\com\nanoka\almacenrepuestos\tables\SupplierTable.java
 D:\Proyectos\java\AlmacenRepuestos\src\main\java\com\nanoka\almacenrepuestos\frames\ProductForm.java
 D:\Proyectos\java\AlmacenRepuestos\src\main\java\com\nanoka\almacenrepuestos\frames\SupplierForm.java
@@ -15,12 +16,14 @@ D:\Proyectos\java\AlmacenRepuestos\src\main\java\com\nanoka\almacenrepuestos\mod
 D:\Proyectos\java\AlmacenRepuestos\src\main\java\com\nanoka\almacenrepuestos\frames\MovementFrame.java
 D:\Proyectos\java\AlmacenRepuestos\src\main\java\com\nanoka\almacenrepuestos\services\ProductService.java
 D:\Proyectos\java\AlmacenRepuestos\src\main\java\com\nanoka\almacenrepuestos\frames\CategoryForm.java
+D:\Proyectos\java\AlmacenRepuestos\src\main\java\com\nanoka\almacenrepuestos\frames\InputForm.java
 D:\Proyectos\java\AlmacenRepuestos\src\main\java\com\nanoka\almacenrepuestos\models\MovementType.java
 D:\Proyectos\java\AlmacenRepuestos\src\main\java\com\nanoka\almacenrepuestos\models\Supplier.java
-D:\Proyectos\java\AlmacenRepuestos\src\main\java\com\nanoka\almacenrepuestos\frames\MovementForm.java
 D:\Proyectos\java\AlmacenRepuestos\src\main\java\com\nanoka\almacenrepuestos\AlmacenRepuestos.java
 D:\Proyectos\java\AlmacenRepuestos\src\main\java\com\nanoka\almacenrepuestos\services\MovementService.java
+D:\Proyectos\java\AlmacenRepuestos\src\main\java\com\nanoka\almacenrepuestos\frames\OutputForm.java
 D:\Proyectos\java\AlmacenRepuestos\src\main\java\com\nanoka\almacenrepuestos\frames\ProductFrame.java
+D:\Proyectos\java\AlmacenRepuestos\src\main\java\com\nanoka\almacenrepuestos\adapters\MovementTypeAdapter.java
 D:\Proyectos\java\AlmacenRepuestos\src\main\java\com\nanoka\almacenrepuestos\tables\CategoryTable.java
 D:\Proyectos\java\AlmacenRepuestos\src\main\java\com\nanoka\almacenrepuestos\services\SupplierService.java
 D:\Proyectos\java\AlmacenRepuestos\src\main\java\com\nanoka\almacenrepuestos\models\Movement.java

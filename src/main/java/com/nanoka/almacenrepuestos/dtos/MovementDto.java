@@ -6,6 +6,7 @@ package com.nanoka.almacenrepuestos.dtos;
 
 import com.nanoka.almacenrepuestos.models.MovementType;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +21,6 @@ public class MovementDto {
     int productId;
     int quantity;
     MovementType movementType;
-    int stock;
-    int stockMin;
     BigDecimal price;
+    LocalDateTime datetime;
 }
