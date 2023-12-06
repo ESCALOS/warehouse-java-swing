@@ -48,9 +48,9 @@ public class ProductTable extends AbstractTableModel{
             case 3:
                 return product.getSupplier().getName();
             case 4:
-                return product.getStock();
+                return product.getStock()+" "+product.getMeasurementUnit();
             case 5:
-                return product.getStockMin();
+                return product.getStockMin()+" "+product.getMeasurementUnit();
             case 6:
                 return "S/. "+product.getPrice().toString();
             default:

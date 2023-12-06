@@ -40,7 +40,7 @@ public class MovementTable extends AbstractTableModel{
             case 1:
                 return movement.getMovementType();
             case 2:
-                return movement.getQuantity();
+                return movement.getQuantity()+" "+movement.getProduct().getMeasurementUnit();
             case 3:
                 return "S/. "+movement.getPrice();
             case 4:
