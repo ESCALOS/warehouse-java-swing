@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.nanoka.almacenrepuestos.services;
 
 import com.google.gson.Gson;
@@ -19,15 +15,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author carlo
- */
 public class ProductService {
-    public List<Product> products = new ArrayList<>();
+    private final List<Product> products = new ArrayList<>();
     private final List<ProductDto> productsDto = new ArrayList<>();
-    public List<Category> categories = new ArrayList<>();
-    public List<Supplier> suppliers = new ArrayList<>();
+    private final List<Category> categories = new ArrayList<>();
+    private final List<Supplier> suppliers = new ArrayList<>();
     
     public final CategoryService categoryService = new CategoryService();
     public final SupplierService supplierService = new SupplierService();
@@ -69,6 +61,14 @@ public class ProductService {
         return this.products;
     }
     
+    public List<Category> getCategories() {
+        return this.categories;
+    }
+    
+    public List<Supplier> getSuppliers() {
+        return this.suppliers;
+    }
+    
     public List<Product> search(String search) {
         List<Product> matching = new ArrayList<>();
         for(Product product : this.products){
@@ -94,16 +94,6 @@ public class ProductService {
         int id = (productsDto.isEmpty() ? 0 : this.productsDto.get(this.productsDto.size() - 1).getId()) + 1;
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try (FileWriter writer = new FileWriter("products.json",StandardCharsets.UTF_8)) {
-            Product product = Product.builder()
-                                    .id(id)
-                                    .name(name)
-                                    .measurementUnit(measurementUnit)
-                                    .category(category)
-                                    .supplier(supplier)
-                                    .stock(stock)
-                                    .stockMin(stockMin)
-                                    .price(price)
-                                    .build();
             ProductDto productDto = ProductDto.builder()
                                     .id(id)
                                     .name(name)
@@ -116,7 +106,6 @@ public class ProductService {
                                     .build();
             this.productsDto.add(productDto);
             gson.toJson(this.productsDto, writer);
-            this.products.add(0,product);
             this.quicksort();
             return 0;
         } catch (IOException e) {
@@ -134,7 +123,7 @@ public class ProductService {
      * @param email Correo del proveedor
      * @return Codigo de respuesta
      */
-    public int update(int id, int localIndex, Category category, Supplier supplier, String name, String measurementUnit, int stock, int stockMin, BigDecimal price) {
+    public int update(int id, Category category, Supplier supplier, String name, String measurementUnit, int stock, int stockMin, BigDecimal price) {
         int index = binarySearch(id);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         if(index >= 0){
@@ -151,13 +140,6 @@ public class ProductService {
                 this.productsDto.get(index).setStockMin(stockMin);
                 this.productsDto.get(index).setPrice(price);
                 gson.toJson(this.productsDto, writer);
-                this.products.get(localIndex).setName(name);
-                this.products.get(localIndex).setMeasurementUnit(measurementUnit);
-                this.products.get(localIndex).setCategory(category);
-                this.products.get(localIndex).setSupplier(supplier);
-                this.products.get(localIndex).setStock(stock);
-                this.products.get(localIndex).setStockMin(stockMin);
-                this.products.get(localIndex).setPrice(price);
                 return 0;
             } catch (IOException e) {
                 System.out.println(e.getMessage());
@@ -168,14 +150,13 @@ public class ProductService {
         }
     }
     
-    public boolean delete(int id, int localIndex) {
+    public boolean delete(int id) {
         int index = binarySearch(id);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         if(index >= 0){
             try (FileWriter writer = new FileWriter("products.json",StandardCharsets.UTF_8)) {
                 this.productsDto.remove(index);
                 gson.toJson(this.productsDto, writer);
-                this.products.remove(localIndex);
                 return true;
             } catch (IOException e) {
                 System.out.println(e.getMessage());

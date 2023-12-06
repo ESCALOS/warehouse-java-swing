@@ -14,7 +14,6 @@ import com.nanoka.almacenrepuestos.models.Supplier;
 public class SupplierForm extends javax.swing.JDialog {
     private final SupplierFrame supplierFrame;
     private final int id;
-    private final int supplierIndex;
     /**
      * Creates new form SupplierForm
      */
@@ -22,16 +21,14 @@ public class SupplierForm extends javax.swing.JDialog {
         super(parent, modal);
         this.supplierFrame = parent;
         this.id = 0;
-        this.supplierIndex = -1;
         setTitle("Agregar Proveedor");
         initComponents();
     }
     
-    public SupplierForm(SupplierFrame parent, boolean modal,int id, int supplierIndex, Supplier currentSupplier) {
+    public SupplierForm(SupplierFrame parent, boolean modal,int id, Supplier currentSupplier) {
         super(parent, modal);
         this.supplierFrame = parent;
         this.id = id;
-        this.supplierIndex = supplierIndex;
         setTitle("Editar Proveedor");
         initComponents();
         txt_ruc.setText(currentSupplier.getRuc());
@@ -66,7 +63,7 @@ public class SupplierForm extends javax.swing.JDialog {
         if(!this.validedForm(ruc, name, tel, email)){
             return;
         }
-        int state = supplierFrame.supplierService.update(id,this.supplierIndex,ruc, name, tel, email);
+        int state = supplierFrame.supplierService.update(id,ruc, name, tel, email);
         switch (state) {
             case 0 -> {
                 JOptionPane.showMessageDialog(rootPane, "Editado correctamente");

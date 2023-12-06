@@ -13,7 +13,6 @@ import javax.swing.JOptionPane;
 public class CategoryForm extends javax.swing.JDialog {
     private final CategoryFrame categoryFrame;
     private final int id;
-    private final int categoryIndex;
     /**
      * Creates new form CategoryForm
      */
@@ -21,16 +20,14 @@ public class CategoryForm extends javax.swing.JDialog {
         super(parent, modal);
         this.categoryFrame = parent;
         this.id = 0;
-        this.categoryIndex = -1;
         setTitle("Agregar Categoría");
         initComponents();
     }
     
-    public CategoryForm(CategoryFrame parent, boolean modal,int id, int categoryIndex, String currentName) {
+    public CategoryForm(CategoryFrame parent, boolean modal,int id, String currentName) {
         super(parent, modal);
         this.categoryFrame = parent;
         this.id = id;
-        this.categoryIndex = categoryIndex;
         setTitle("Editar categoría");
         initComponents();
         txt_name.setText(currentName);
@@ -56,7 +53,7 @@ public class CategoryForm extends javax.swing.JDialog {
         if(!this.validedForm(name)){
             return;
         }
-        int state = categoryFrame.categoryService.update(id,this.categoryIndex,name);
+        int state = categoryFrame.categoryService.update(id,name);
         switch (state) {
             case 0 -> {
                 JOptionPane.showMessageDialog(rootPane, "Editado correctamente");

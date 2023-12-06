@@ -22,7 +22,7 @@
   {
     "id": 3,
     "name": "Access",
-    "measurementUnit": "sda",
+    "measurementUnit": "Unidad",
     "categoryId": 3,
     "supplierId": 2,
     "stock": 10,
@@ -32,7 +32,7 @@
   {
     "id": 4,
     "name": "Zapato",
-    "measurementUnit": "sda",
+    "measurementUnit": "Par",
     "categoryId": 3,
     "supplierId": 2,
     "stock": 3,
@@ -41,17 +41,17 @@
   },
   {
     "id": 5,
-    "name": "12",
-    "measurementUnit": "asd",
+    "name": "Collar",
+    "measurementUnit": "Decena",
     "categoryId": 3,
     "supplierId": 3,
     "stock": 2,
     "stockMin": 2,
-    "price": 1111.22
+    "price": 56.14
   },
   {
     "id": 6,
-    "name": "Alformbra 60x60cm",
+    "name": "Alformbra 60x50cm",
     "measurementUnit": "Unidad",
     "categoryId": 6,
     "supplierId": 1,

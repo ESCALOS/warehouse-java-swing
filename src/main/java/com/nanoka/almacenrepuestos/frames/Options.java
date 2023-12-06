@@ -29,7 +29,7 @@ public class Options extends javax.swing.JFrame {
         btn_category = new javax.swing.JButton();
         btn_supplier = new javax.swing.JButton();
         btn_product = new javax.swing.JButton();
-        btn_logout = new javax.swing.JButton();
+        btn_movement = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Opciones");
@@ -64,9 +64,14 @@ public class Options extends javax.swing.JFrame {
             }
         });
 
-        btn_logout.setText("Movimientos");
-        btn_logout.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btn_logout.setPreferredSize(new java.awt.Dimension(120, 25));
+        btn_movement.setText("Movimientos");
+        btn_movement.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_movement.setPreferredSize(new java.awt.Dimension(120, 25));
+        btn_movement.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_movementActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -75,7 +80,7 @@ public class Options extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(60, 60, 60)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btn_logout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_movement, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btn_supplier, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -94,7 +99,7 @@ public class Options extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btn_product, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btn_logout, javax.swing.GroupLayout.PREFERRED_SIZE, 23, Short.MAX_VALUE)
+                .addComponent(btn_movement, javax.swing.GroupLayout.PREFERRED_SIZE, 23, Short.MAX_VALUE)
                 .addContainerGap(29, Short.MAX_VALUE))
         );
 
@@ -119,6 +124,12 @@ public class Options extends javax.swing.JFrame {
         ProductFrame productFrame = new ProductFrame();
         productFrame.setVisible(true);
     }//GEN-LAST:event_btn_productActionPerformed
+
+    private void btn_movementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_movementActionPerformed
+        dispose();
+        MovementFrame movementFrame = new MovementFrame();
+        movementFrame.setVisible(true);
+    }//GEN-LAST:event_btn_movementActionPerformed
 
     /**
      * @param args the command line arguments
@@ -158,7 +169,7 @@ public class Options extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_category;
-    private javax.swing.JButton btn_logout;
+    private javax.swing.JButton btn_movement;
     private javax.swing.JButton btn_product;
     private javax.swing.JButton btn_supplier;
     // End of variables declaration//GEN-END:variables

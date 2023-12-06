@@ -59,7 +59,6 @@ public class CategoryService {
             Category category = Category.builder().id(id).name(name).build();
             categories.add(category);
             gson.toJson(categories, writer);
-            this.categories.add(category);
             return 0;
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -67,7 +66,7 @@ public class CategoryService {
         }
     }
     
-    public int update(int id, int localIndex, String name) {
+    public int update(int id, String name) {
         List<Category> categories = new ArrayList<>();
         loadData(categories);
         int index = binarySearch(categories, id);
@@ -92,7 +91,7 @@ public class CategoryService {
         }
     }
     
-    public boolean delete(int id, int localIndex) {
+    public boolean delete(int id) {
         List<Category> categories = new ArrayList<>();
         loadData(categories);
         int index = binarySearch(categories, id);
@@ -101,7 +100,6 @@ public class CategoryService {
             try (FileWriter writer = new FileWriter("categories.json",StandardCharsets.UTF_8)) {
                 categories.remove(index);
                 gson.toJson(categories, writer);
-                this.categories.remove(localIndex);
                 return true;
             } catch (IOException e) {
                 System.out.println(e.getMessage());

@@ -186,7 +186,7 @@ public class SupplierFrame extends javax.swing.JFrame {
             int id = this.suppliers.get(selectedRow).getId();
             int option = JOptionPane.showConfirmDialog(rootPane, "¿Estas seguro de eliminar al proveedor "+ supplier_table.getValueAt(selectedRow, 1).toString() +"?","Confirmar Acción",JOptionPane.YES_NO_OPTION);
             if(option == JOptionPane.YES_OPTION) {
-                if(supplierService.delete(id,selectedRow)) {
+                if(supplierService.delete(id)) {
                     JOptionPane.showMessageDialog(rootPane, "Eliminado correctamente");
                     this.suppliers.clear();
                     this.suppliers.addAll(supplierService.getSuppliers());
@@ -221,7 +221,7 @@ public class SupplierFrame extends javax.swing.JFrame {
         int selectedRow = supplier_table.getSelectedRow();
         if(selectedRow != -1) {
             int id = this.suppliers.get(selectedRow).getId();
-            SupplierForm supplierForm = new SupplierForm(this, true, id, selectedRow,this.suppliers.get(selectedRow));
+            SupplierForm supplierForm = new SupplierForm(this, true, id,this.suppliers.get(selectedRow));
             supplierForm.setVisible(true);
         }else{
             JOptionPane.showMessageDialog(rootPane, "Por favor, selecciona una fila para editar");

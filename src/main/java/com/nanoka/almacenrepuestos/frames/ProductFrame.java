@@ -11,10 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author carlo
- */
 public class ProductFrame extends javax.swing.JFrame {
 
     private final List<Product> products = new ArrayList<>();
@@ -186,7 +182,7 @@ public class ProductFrame extends javax.swing.JFrame {
             int id = this.products.get(selectedRow).getId();
             int option = JOptionPane.showConfirmDialog(rootPane, "¿Estas seguro de eliminar el producto "+ product_table.getValueAt(selectedRow, 0).toString() +"?","Confirmar Acción",JOptionPane.YES_NO_OPTION);
             if(option == JOptionPane.YES_OPTION) {
-                if(productService.delete(id,selectedRow)) {
+                if(productService.delete(id)) {
                     JOptionPane.showMessageDialog(rootPane, "Eliminado correctamente");
                     this.products.clear();
                     this.products.addAll(productService.getProducts());
@@ -221,7 +217,7 @@ public class ProductFrame extends javax.swing.JFrame {
         int selectedRow = product_table.getSelectedRow();
         if(selectedRow != -1) {
             int id = this.products.get(selectedRow).getId();
-            ProductForm productForm = new ProductForm(this, true, id, selectedRow,this.products.get(selectedRow));
+            ProductForm productForm = new ProductForm(this, true, id,this.products.get(selectedRow));
             productForm.setVisible(true);
         }else{
             JOptionPane.showMessageDialog(rootPane, "Por favor, selecciona una fila para editar");

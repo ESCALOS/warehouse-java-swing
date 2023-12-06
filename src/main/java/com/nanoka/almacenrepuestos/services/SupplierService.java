@@ -67,7 +67,6 @@ public class SupplierService {
             Supplier supplier = Supplier.builder().id(id).ruc(ruc).name(name).tel(tel).email(email).build();
             suppliers.add(supplier);
             gson.toJson(suppliers, writer);
-            this.suppliers.add(0,supplier);
             return 0;
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -84,7 +83,7 @@ public class SupplierService {
      * @param email Correo del proveedor
      * @return Codigo de respuesta
      */
-    public int update(int id, int localIndex, String ruc, String name, String tel, String email) {
+    public int update(int id, String ruc, String name, String tel, String email) {
         List<Supplier> suppliers = new ArrayList<>();
         loadData(suppliers);
         int index = binarySearch(suppliers, id);
@@ -116,7 +115,7 @@ public class SupplierService {
         }
     }
     
-    public boolean delete(int id, int localIndex) {
+    public boolean delete(int id) {
         List<Supplier> suppliers = new ArrayList<>();
         loadData(suppliers);
         int index = binarySearch(suppliers, id);
@@ -125,7 +124,6 @@ public class SupplierService {
             try (FileWriter writer = new FileWriter("suppliers.json",StandardCharsets.UTF_8)) {
                 suppliers.remove(index);
                 gson.toJson(suppliers, writer);
-                this.suppliers.remove(localIndex);
                 return true;
             } catch (IOException e) {
                 System.out.println(e.getMessage());

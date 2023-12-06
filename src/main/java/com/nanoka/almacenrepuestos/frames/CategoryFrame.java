@@ -183,7 +183,7 @@ public class CategoryFrame extends javax.swing.JFrame {
             int id = this.categories.get(selectedRow).getId();
             int option = JOptionPane.showConfirmDialog(rootPane, "¿Estas seguro de eliminar la categoría "+ category_table.getValueAt(selectedRow, 0).toString() +"?","Confirmar Acción",JOptionPane.YES_NO_OPTION);
             if(option == JOptionPane.YES_OPTION) {
-                if(categoryService.delete(id,selectedRow)) {
+                if(categoryService.delete(id)) {
                     JOptionPane.showMessageDialog(rootPane, "Eliminado correctamente");
                     this.categories.clear();
                     this.categories.addAll(categoryService.getCategories());
@@ -218,7 +218,7 @@ public class CategoryFrame extends javax.swing.JFrame {
         int selectedRow = category_table.getSelectedRow();
         if(selectedRow != -1) {
             int id = this.categories.get(selectedRow).getId();
-            CategoryForm categoryForm = new CategoryForm(this, true, id, selectedRow,category_table.getValueAt(selectedRow, 0).toString());
+            CategoryForm categoryForm = new CategoryForm(this, true, id,category_table.getValueAt(selectedRow, 0).toString());
             categoryForm.setVisible(true);
         }else{
             JOptionPane.showMessageDialog(rootPane, "Por favor, selecciona una fila para editar");

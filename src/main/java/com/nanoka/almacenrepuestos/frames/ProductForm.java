@@ -20,7 +20,6 @@ import java.text.NumberFormat;
 public class ProductForm extends javax.swing.JDialog {
     private final ProductFrame productFrame;
     private final int id;
-    private final int productIndex;
     /**
      * Creates new form ProductForm
      */
@@ -28,7 +27,6 @@ public class ProductForm extends javax.swing.JDialog {
         super(parent, modal);
         this.productFrame = parent;
         this.id = 0;
-        this.productIndex = -1;
         setTitle("Agregar Producto");
         initComponents();
         loadCategories();
@@ -37,17 +35,16 @@ public class ProductForm extends javax.swing.JDialog {
         this.setFormatPrice();
     }
     
-    public ProductForm(ProductFrame parent, boolean modal,int id, int productIndex, Product currentProduct) {
+    public ProductForm(ProductFrame parent, boolean modal,int id, Product currentProduct) {
         super(parent, modal);
         this.productFrame = parent;
         this.id = id;
-        this.productIndex = productIndex;
         setTitle("Editar Producto");
         initComponents();
         loadCategories();
         loadSuppliers();
-        cb_category.setSelectedItem(this.productFrame.productService.categories.get(this.productFrame.productService.categoryService.binarySearch(this.productFrame.productService.categories, currentProduct.getCategory().getId())));
-        cb_supplier.setSelectedItem(this.productFrame.productService.suppliers.get(this.productFrame.productService.supplierService.binarySearch(this.productFrame.productService.suppliers, currentProduct.getSupplier().getId())));
+        cb_category.setSelectedItem(this.productFrame.productService.getCategories().get(this.productFrame.productService.categoryService.binarySearch(this.productFrame.productService.getCategories(), currentProduct.getCategory().getId())));
+        cb_supplier.setSelectedItem(this.productFrame.productService.getSuppliers().get(this.productFrame.productService.supplierService.binarySearch(this.productFrame.productService.getSuppliers(), currentProduct.getSupplier().getId())));
         txt_name.setText(currentProduct.getName());
         txt_measurement_unit.setText(currentProduct.getMeasurementUnit());
         sp_stock.setValue(currentProduct.getStock());
@@ -89,7 +86,7 @@ public class ProductForm extends javax.swing.JDialog {
         if(!this.validedForm(name, measurementUnit, stock, stockMin, price)){
             return;
         }
-        int state = productFrame.productService.update(id,this.productIndex,category, supplier, name, measurementUnit, stock, stockMin, price);
+        int state = productFrame.productService.update(id,category, supplier, name, measurementUnit, stock, stockMin, price);
         switch (state) {
             case 0 -> {
                 JOptionPane.showMessageDialog(rootPane, "Editado correctamente");
