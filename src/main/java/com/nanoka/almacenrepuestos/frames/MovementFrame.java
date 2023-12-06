@@ -24,11 +24,14 @@ public class MovementFrame extends javax.swing.JFrame {
         movements.addAll(movementService.getMovements());
         movementTableModel = new MovementTable(movements);
         movement_table.setModel(movementTableModel);
+        btn_delete.setEnabled(!this.movements.isEmpty());
     }
 
     public void refreshData() {
         this.movements.clear();
         this.movements.addAll(movementService.getMovements());
+        btn_delete.setEnabled(!this.movements.isEmpty());
+        
         movementTableModel.fireTableDataChanged();
     }
     
@@ -177,23 +180,17 @@ public class MovementFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
-        /*int selectedRow = movement_table.getSelectedRow();
-        if(selectedRow != -1) {
-            int id = this.movements.get(selectedRow).getId();
-            int option = JOptionPane.showConfirmDialog(rootPane, "¿Estas seguro de eliminar el movemento "+ movement_table.getValueAt(selectedRow, 0).toString() +"?","Confirmar Acción",JOptionPane.YES_NO_OPTION);
-            if(option == JOptionPane.YES_OPTION) {
-                if(movementService.delete(id,selectedRow)) {
-                    JOptionPane.showMessageDialog(rootPane, "Eliminado correctamente");
-                    this.movements.clear();
-                    this.movements.addAll(movementService.getMovements());
-                    movementTableModel.fireTableDataChanged();
-                }else{
-                    JOptionPane.showMessageDialog(rootPane, "No se pudo eliminar");
-                }
+        int option = JOptionPane.showConfirmDialog(rootPane, "¿Estas seguro de anular el último movimiento?","Confirmar Acción",JOptionPane.YES_NO_OPTION);
+        if(option == JOptionPane.YES_OPTION) {
+            int state = movementService.cancel();
+            switch (state) {
+            case 0 -> {
+                JOptionPane.showMessageDialog(rootPane, "Anulado correctamente");
+                this.refreshData();
             }
-        }else {
-            JOptionPane.showMessageDialog(rootPane, "Por favor, selecciona una fila para eliminar");
-        }*/
+            default -> JOptionPane.showMessageDialog(rootPane, "No se pudo anular");
+        }
+        }
     }//GEN-LAST:event_btn_deleteActionPerformed
 
     private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed

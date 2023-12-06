@@ -38,7 +38,11 @@ public class OutputForm extends javax.swing.JDialog {
             case 0 -> {
                 JOptionPane.showMessageDialog(rootPane, "Agregado correctamente");
                 sp_quantity.setValue(1);
-                cb_product.setSelectedIndex(0);
+                Product product = (Product) cb_product.getSelectedItem();
+                int stock = product.getStock() - quantity;
+                product.setStock(stock);
+                txt_available.setText(String.valueOf(stock));
+                this.movementFrame.refreshData();
             }
             case 2 -> JOptionPane.showMessageDialog(rootPane, "No hay suficiente stock");
             default -> JOptionPane.showMessageDialog(rootPane, "No se pudo guardar");
@@ -112,6 +116,12 @@ public class OutputForm extends javax.swing.JDialog {
 
         jLabel8.setText("Cantidad");
 
+        cb_product.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cb_productActionPerformed(evt);
+            }
+        });
+
         txt_available.setText("100");
         txt_available.setEnabled(false);
 
@@ -173,6 +183,11 @@ public class OutputForm extends javax.swing.JDialog {
         this.save(product.getId(),(int) sp_quantity.getValue(),Integer.parseInt(txt_available.getText()));
        
     }//GEN-LAST:event_btn_addActionPerformed
+
+    private void cb_productActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_productActionPerformed
+        Product product = (Product) cb_product.getSelectedItem();
+        txt_available.setText(String.valueOf(product.getStock()));
+    }//GEN-LAST:event_cb_productActionPerformed
 
     /**
      * @param args the command line arguments

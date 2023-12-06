@@ -7,7 +7,6 @@ import com.nanoka.almacenrepuestos.adapters.LocalDateTimeAdapter;
 import com.nanoka.almacenrepuestos.adapters.MovementTypeAdapter;
 import com.nanoka.almacenrepuestos.dtos.MovementDto;
 import com.nanoka.almacenrepuestos.dtos.ProductDto;
-import com.nanoka.almacenrepuestos.models.Product;
 import java.math.RoundingMode;
 import com.nanoka.almacenrepuestos.models.Movement;
 import com.nanoka.almacenrepuestos.models.MovementType;
@@ -127,7 +126,18 @@ public class MovementService {
         }
     }
     
-    public void cancel() {
+    public int cancel() {
+        MovementDto movementDto = this.movementsDto.peek();
+        MovementType movementType = movementDto.getMovementType().equals(MovementType.Ingreso) ? MovementType.Salida : MovementType.Ingreso;
+        int state = this.productService.updateStock(movementType, movementDto.getProductId(), movementDto.getQuantity(), movementDto.getPrice());
+        if(state == 0) {
+            this.movementsDto.pop();
+            int code = this.save();
+            this.movements.remove(0);
+            return code;
+        }else{
+            return state;
+        }
         
     }
 }

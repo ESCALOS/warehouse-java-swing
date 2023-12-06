@@ -42,7 +42,7 @@ public class MovementTable extends AbstractTableModel{
             case 2:
                 return movement.getQuantity();
             case 3:
-                return movement.getPrice();
+                return "S/. "+movement.getPrice();
             case 4:
                 return movement.getDatetime();
             default:

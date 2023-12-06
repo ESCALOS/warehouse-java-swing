@@ -1,50 +1,34 @@
 [
   {
     "id": 1,
-    "productId": 6,
-    "quantity": 10,
-    "movementType": "Ingreso",
-    "price": 100,
-    "datetime": "23/11/2023 08:15:56"
+    "productId": 5,
+    "quantity": 1,
+    "movementType": "Salida",
+    "price": 28.07,
+    "datetime": "06/12/2023 17:16:04"
   },
   {
     "id": 2,
-    "productId": 2,
-    "quantity": 12,
-    "movementType": "Ingreso",
-    "price": 11,
-    "datetime": "06/12/2023 12:55:57"
+    "productId": 5,
+    "quantity": 1,
+    "movementType": "Salida",
+    "price": 28.07,
+    "datetime": "06/12/2023 17:16:46"
   },
   {
     "id": 3,
-    "productId": 1,
-    "quantity": 6,
-    "movementType": "Ingreso",
-    "price": 120,
-    "datetime": "06/12/2023 12:59:37"
+    "productId": 3,
+    "quantity": 5,
+    "movementType": "Salida",
+    "price": 15.11,
+    "datetime": "06/12/2023 17:18:58"
   },
   {
     "id": 4,
-    "productId": 1,
-    "quantity": 4,
-    "movementType": "Salida",
-    "price": 80.00,
-    "datetime": "06/12/2023 13:00:37"
-  },
-  {
-    "id": 5,
-    "productId": 1,
-    "quantity": 4,
+    "productId": 3,
+    "quantity": 15,
     "movementType": "Ingreso",
-    "price": 80,
-    "datetime": "06/12/2023 13:05:21"
-  },
-  {
-    "id": 6,
-    "productId": 5,
-    "quantity": 10,
-    "movementType": "Ingreso",
-    "price": 1000,
-    "datetime": "06/12/2023 13:06:36"
+    "price": 15000,
+    "datetime": "06/12/2023 17:19:28"
   }
 ]
