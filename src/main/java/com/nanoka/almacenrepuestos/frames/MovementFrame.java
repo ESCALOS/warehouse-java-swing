@@ -1,10 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.nanoka.almacenrepuestos.frames;
 
 import com.nanoka.almacenrepuestos.models.Movement;
+import com.nanoka.almacenrepuestos.models.Product;
 import com.nanoka.almacenrepuestos.services.MovementService;
 import com.nanoka.almacenrepuestos.tables.MovementTable;
 import java.util.ArrayList;
@@ -25,14 +22,21 @@ public class MovementFrame extends javax.swing.JFrame {
         movementTableModel = new MovementTable(movements);
         movement_table.setModel(movementTableModel);
         btn_delete.setEnabled(!this.movements.isEmpty());
+        loadProducts();
     }
 
     public void refreshData() {
         this.movements.clear();
         this.movements.addAll(movementService.getMovements());
         btn_delete.setEnabled(!this.movements.isEmpty());
-        
         movementTableModel.fireTableDataChanged();
+    }
+    
+    private void loadProducts() {
+        cb_product.addItem(Product.builder().id(0).name("Todos").build());
+        for(Product product : this.movementService.productService.getProducts()) {
+            cb_product.addItem(product);
+        }
     }
     
     /**
@@ -45,8 +49,6 @@ public class MovementFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        txt_search = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         movement_table = new javax.swing.JTable();
         btn_search = new javax.swing.JButton();
@@ -54,6 +56,10 @@ public class MovementFrame extends javax.swing.JFrame {
         btn_delete = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         btn_input = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        cb_product = new javax.swing.JComboBox<>();
+        cb_movement_type = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Productos");
@@ -62,8 +68,6 @@ public class MovementFrame extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Lista de Movimientos");
-
-        jLabel2.setText("Buscar: ");
 
         movement_table.setColumnSelectionAllowed(true);
         movement_table.getTableHeader().setReorderingAllowed(false);
@@ -115,6 +119,12 @@ public class MovementFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setText("Producto");
+
+        jLabel4.setText("Tipo de Movimiento");
+
+        cb_movement_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Ingreso", "Salida" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -123,29 +133,31 @@ public class MovementFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(199, 199, 199)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(btn_input, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btn_output, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btn_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txt_search, javax.swing.GroupLayout.PREFERRED_SIZE, 487, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btn_search, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())))
+                                .addComponent(btn_input, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btn_output, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btn_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cb_product, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(19, 19, 19)
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cb_movement_type, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btn_search, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(199, 199, 199)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -156,9 +168,11 @@ public class MovementFrame extends javax.swing.JFrame {
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txt_search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_search))
+                    .addComponent(btn_search)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(cb_product, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cb_movement_type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -166,7 +180,7 @@ public class MovementFrame extends javax.swing.JFrame {
                     .addComponent(btn_output)
                     .addComponent(btn_delete)
                     .addComponent(btn_input))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
 
         pack();
@@ -193,16 +207,6 @@ public class MovementFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_deleteActionPerformed
 
-    private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
-        /*this.movements.clear();
-        if(txt_search.getText().isEmpty()) {
-            this.movements.addAll(movementService.getMovements());
-        }else {
-            this.movements.addAll(movementService.search( txt_search.getText()));
-        }
-        movementTableModel.fireTableDataChanged();*/
-    }//GEN-LAST:event_btn_searchActionPerformed
-
     private void btn_inputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_inputActionPerformed
         InputForm inputForm = new InputForm(this, true);
         inputForm.setVisible(true);
@@ -213,6 +217,25 @@ public class MovementFrame extends javax.swing.JFrame {
         outputForm.setVisible(true);
         
     }//GEN-LAST:event_btn_outputActionPerformed
+
+    private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
+        //this.movements.clear();
+        Product product = (Product) cb_product.getSelectedItem();
+        String movementType = cb_movement_type.getSelectedItem().toString();
+        this.movements.clear();
+        if(product.getId() != 0 && !movementType.equals("Todos")){
+            this.movements.addAll(this.movementService.filterMovements(product, movementType));
+            movementTableModel.fireTableDataChanged();
+        }else if(product.getId() == 0 && !movementType.equals("Todos")){
+            this.movements.addAll(this.movementService.filterMovements(movementType));
+            movementTableModel.fireTableDataChanged();
+        }else if(product.getId() != 0 && movementType.equals("Todos")) {
+             this.movements.addAll(this.movementService.filterMovements(product));
+            movementTableModel.fireTableDataChanged();
+        }else{
+            this.refreshData();
+        }
+    }//GEN-LAST:event_btn_searchActionPerformed
 
     /**
      * @param args the command line arguments
@@ -269,11 +292,13 @@ public class MovementFrame extends javax.swing.JFrame {
     private javax.swing.JButton btn_input;
     private javax.swing.JButton btn_output;
     private javax.swing.JButton btn_search;
+    private javax.swing.JComboBox<String> cb_movement_type;
+    private javax.swing.JComboBox<Product> cb_product;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable movement_table;
-    private javax.swing.JTextField txt_search;
     // End of variables declaration//GEN-END:variables
 }

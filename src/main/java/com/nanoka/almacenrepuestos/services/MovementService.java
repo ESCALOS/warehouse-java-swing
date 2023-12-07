@@ -8,6 +8,7 @@ import com.nanoka.almacenrepuestos.adapters.MovementTypeAdapter;
 import com.nanoka.almacenrepuestos.dtos.MovementDto;
 import com.nanoka.almacenrepuestos.dtos.ProductDto;
 import java.math.RoundingMode;
+import com.nanoka.almacenrepuestos.models.Product;
 import com.nanoka.almacenrepuestos.models.Movement;
 import com.nanoka.almacenrepuestos.models.MovementType;
 import java.io.FileReader;
@@ -61,6 +62,36 @@ public class MovementService {
     
     public List<Movement> getMovements() {
         return this.movements;
+    }
+    
+    public List<Movement> filterMovements(Product product){
+        List<Movement> movements = new ArrayList<>();
+        for (Movement movement : this.movements) {
+            if(movement.getProduct().getId() == product.getId()){
+                movements.add(movement);
+            }
+        }
+        return movements;
+    }
+    
+    public List<Movement> filterMovements(String movementType){
+        List<Movement> movements = new ArrayList<>();
+        for (Movement movement : this.movements) {
+            if(movement.getMovementType().name().equals(movementType)){
+                movements.add(movement);
+            }
+        }
+        return movements;
+    }
+    
+    public List<Movement> filterMovements(Product product, String movementType){
+        List<Movement> movements = new ArrayList<>();
+        for (Movement movement : this.movements) {
+            if(movement.getProduct().getId() == product.getId() && movement.getMovementType().name().equals(movementType)){
+                movements.add(movement);
+            }
+        }
+        return movements;
     }
     
     private int save() {

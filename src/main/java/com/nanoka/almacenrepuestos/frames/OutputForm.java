@@ -6,12 +6,6 @@ package com.nanoka.almacenrepuestos.frames;
 
 import javax.swing.JOptionPane;
 import com.nanoka.almacenrepuestos.models.Product;
-import com.nanoka.almacenrepuestos.models.Category;
-import com.nanoka.almacenrepuestos.models.Supplier;
-import java.math.BigDecimal;
-import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.NumberFormatter;
-import java.text.NumberFormat;
 
 /**
  *
