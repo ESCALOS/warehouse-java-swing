@@ -136,7 +136,7 @@ public class MovementService {
         if(quantity > productDto.getStock()) {
             return 2;
         }
-        BigDecimal price = BigDecimal.valueOf(quantity).divide(BigDecimal.valueOf(productDto.getStock())).multiply(productDto.getPrice());
+        BigDecimal price = BigDecimal.valueOf(quantity).divide(BigDecimal.valueOf(productDto.getStock()),2,RoundingMode.HALF_UP).multiply(productDto.getPrice());
         price = price.setScale(2, RoundingMode.HALF_UP);
         MovementDto movementDto = MovementDto.builder()
                                     .id(id)

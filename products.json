@@ -1,8 +1,8 @@
 [
   {
     "id": 1,
-    "name": "Nike T38",
-    "measurementUnit": "Caja",
+    "name": "Sellador para neumáticos",
+    "measurementUnit": "Unidad",
     "categoryId": 10,
     "supplierId": 1,
     "stock": 34,
@@ -11,29 +11,29 @@
   },
   {
     "id": 2,
-    "name": "Mueble",
-    "measurementUnit": "Six Pack",
+    "name": "Aceite para motor",
+    "measurementUnit": "Galón",
     "categoryId": 17,
     "supplierId": 3,
-    "stock": 18,
+    "stock": 5,
     "stockMin": 14,
-    "price": 11.99
+    "price": 3.27
   },
   {
     "id": 3,
-    "name": "Access",
+    "name": "Filtro de aceite",
     "measurementUnit": "Unidad",
     "categoryId": 3,
     "supplierId": 2,
-    "stock": 20,
+    "stock": 5,
     "stockMin": 20,
-    "price": 15015.10
+    "price": 15.10
   },
   {
     "id": 4,
-    "name": "Zapato",
-    "measurementUnit": "Par",
-    "categoryId": 3,
+    "name": "Correa de distribución",
+    "measurementUnit": "Unidad",
+    "categoryId": 16,
     "supplierId": 2,
     "stock": 3,
     "stockMin": 3,
@@ -41,8 +41,8 @@
   },
   {
     "id": 5,
-    "name": "Collar",
-    "measurementUnit": "Decena",
+    "name": "Filtro de aire",
+    "measurementUnit": "Unidad",
     "categoryId": 3,
     "supplierId": 3,
     "stock": 0,
@@ -51,7 +51,7 @@
   },
   {
     "id": 6,
-    "name": "Alformbra 60x50cm",
+    "name": "Disco de freno",
     "measurementUnit": "Unidad",
     "categoryId": 6,
     "supplierId": 1,

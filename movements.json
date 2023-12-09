@@ -25,10 +25,26 @@
   },
   {
     "id": 4,
-    "productId": 3,
-    "quantity": 15,
-    "movementType": "Ingreso",
-    "price": 15000,
-    "datetime": "06/12/2023 17:19:28"
+    "productId": 2,
+    "quantity": 1,
+    "movementType": "Salida",
+    "price": 0.72,
+    "datetime": "09/12/2023 10:57:29"
+  },
+  {
+    "id": 5,
+    "productId": 2,
+    "quantity": 2,
+    "movementType": "Salida",
+    "price": 1.35,
+    "datetime": "09/12/2023 10:57:46"
+  },
+  {
+    "id": 6,
+    "productId": 2,
+    "quantity": 10,
+    "movementType": "Salida",
+    "price": 6.65,
+    "datetime": "09/12/2023 10:58:08"
   }
 ]

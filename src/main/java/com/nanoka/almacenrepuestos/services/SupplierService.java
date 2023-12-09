@@ -76,7 +76,6 @@ public class SupplierService {
     /**
      * Edita los datos del proveedor
      * @param id Id del proveedor
-     * @param localIndex Indice de la lista de proveedores ordenada por nombre
      * @param ruc Ruc del proveedor
      * @param name Nombre del proveedor
      * @param tel Telefono del proveedor

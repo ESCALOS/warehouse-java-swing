@@ -62,7 +62,7 @@ public class MovementFrame extends javax.swing.JFrame {
         cb_movement_type = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Productos");
+        setTitle("Movimientos");
         setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N

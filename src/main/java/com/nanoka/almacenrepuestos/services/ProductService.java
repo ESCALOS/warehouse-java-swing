@@ -88,11 +88,13 @@ public class ProductService {
         return matching;
     }
     /**
-     * Guarda al proveedor
-     * @param ruc Ruc del proveedor
-     * @param name Nombre del proveedor
-     * @param tel Telefono del proveedor
-     * @param email Correo del proveedor
+     * Guarda el producto
+     * @param category Categoría
+     * @param Supplier Proveedor
+     * @param measurementUnit Unidad de medida
+     * @param stock Stock
+     * @param stockMin Stock mínimo
+     * @param price Valor total
      * @return Codigo de respuesta
      */
     public int save(Category category, Supplier supplier, String name, String measurementUnit, int stock, int stockMin, BigDecimal price){
@@ -125,11 +127,12 @@ public class ProductService {
     /**
      * Edita los datos del proveedor
      * @param id Id del proveedor
-     * @param localIndex Indice de la lista de proveedores ordenada por nombre
-     * @param ruc Ruc del proveedor
-     * @param name Nombre del proveedor
-     * @param tel Telefono del proveedor
-     * @param email Correo del proveedor
+     * @param category Categoría
+     * @param Supplier Proveedor
+     * @param measurementUnit Unidad de medida
+     * @param stock Stock
+     * @param stockMin Stock mínimo
+     * @param price Valor total
      * @return Codigo de respuesta
      */
     public int update(int id, Category category, Supplier supplier, String name, String measurementUnit, int stock, int stockMin, BigDecimal price) {

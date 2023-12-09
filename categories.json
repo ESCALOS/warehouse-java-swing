@@ -1,42 +1,38 @@
 [
   {
     "id": 1,
-    "name": "Televisor"
+    "name": "Sistema de limpieza"
   },
   {
     "id": 3,
-    "name": "Accesorios"
+    "name": "Mantenimiento de motor"
   },
   {
     "id": 6,
-    "name": "Hogar"
+    "name": "Sistema de frenos"
   },
   {
     "id": 10,
-    "name": "Zapatos"
+    "name": "Neumáticos"
   },
   {
     "id": 11,
-    "name": "Utensilios"
+    "name": "Sistema eléctrico"
   },
   {
     "id": 13,
-    "name": "Sonidos"
+    "name": "Iluminación"
   },
   {
     "id": 15,
-    "name": "Computadoras"
+    "name": "Sistema de encendido"
   },
   {
     "id": 16,
-    "name": "Ropa"
+    "name": "Transmisión"
   },
   {
     "id": 17,
-    "name": "Moviliarios"
-  },
-  {
-    "id": 19,
-    "name": "Todo"
+    "name": "Lubricantes"
   }
 ]
